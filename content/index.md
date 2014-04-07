@@ -1,6 +1,5 @@
 ---
-wef: wef
+title: The Title of the Index Page
 ---
-index.html
 
-awefwefew
+Bla bla words words about the index page.

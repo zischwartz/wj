@@ -1,11 +1,21 @@
-{{#each page}}
-  {{@key}}: {{this}} <br>
-{{/each}}
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-{{{content}}}
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+
+	<!-- {{#each page}} -->
+		<!-- <p>{{@key}} : {{this}}</p> -->
+	<!-- {{/each}} -->
+	<h1>{{page.title}}</h1>
+	{{{content}}}
 
 
-<script>document.write('<script src="http://'
-  + location.host.split(':')[0]
-  + ':35729/livereload.js"></'
-  + 'script>')</script>
+	<script>document.write('<script src="http://'+ location.host.split(':')[0] + ':35729/livereload.js"></' + 'script>')</script>
+
+  </body>
+</html>

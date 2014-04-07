@@ -16,7 +16,6 @@ ecstatic = require 'ecstatic'
 lr = require "tiny-lr"
 livereload = require "gulp-livereload"
 
-# less = require 'gulp-less'
 # through = require 'through'
 # exec = require 'gulp-exec'
 # _ = require 'underscore'
@@ -34,12 +33,8 @@ gulp.task "listen", (next) ->
     next()
 
 
-
-
-
-
 gulp.task "html", ->
-  watch {glob: 'content/**/*.md', verbose:true, name:'md watch~'}, ->
+  watch {glob: 'content/**/*.md', name:'md watch~'}, -> # verbose:true,
     gulp.src("content/**/*.md")
     .pipe(frontmatter(property: "meta"))
     .pipe(marked())
@@ -57,9 +52,13 @@ gulp.task "html", ->
       return
     )).pipe(gulp.dest("public/")).pipe(livereload(lr_server))
 
+gulp.task "less", ->
+  gulp.src("style/style.less").pipe(watch()).pipe(less())
+  .pipe(gulp.dest("public/")).pipe(livereload(lr_server))
+
 gulp.task "serve", ->
   http.createServer(
     ecstatic({ root: __dirname + '/public'  })
   ).listen(8745)
 
-gulp.task 'default', ['html', 'serve', 'listen']
+gulp.task 'default', ['html', 'serve', 'less', 'listen']
