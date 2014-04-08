@@ -3,13 +3,26 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
+        <title>{{site.title}} - {{page.title}}</title>
 		<link rel="stylesheet" href="/style.css">
 	</head>
+
 	<body>
-	<!-- {{#each page}} -->
-		<!-- <p>{{@key}} : {{this}}</p> -->
-	<!-- {{/each}} -->
+	<h2>Page</h2>
+	{{#each page}}
+		<p><strong>{{@key}} </strong>: {{this}}</p>
+	{{/each}}
+
+	<h2>Page.section</h2>
+	{{#each page.section}}
+		<p><strong>{{@key}} </strong>: {{this}}</p>
+	{{/each}}
+	
+	<h2>Site.index</h2>
+	{{#each site.index}}
+		<p><strong>{{@key}}</strong> : {{this}}</p>
+	{{/each}}
+
 	<h1>{{page.title}}</h1>
 	{{{content}}}
 
