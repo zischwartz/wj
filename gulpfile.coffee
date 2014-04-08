@@ -23,18 +23,31 @@ livereload = require "gulp-livereload"
 site =
   title: 'My Site'
 
-base_template = handlebars.compile String(fs.readFileSync('templates/base.html'))
+# base_template = handlebars.compile String(fs.readFileSync('templates/base.html'))
+templates = {}
+
+templates['base']  = handlebars.compile String(fs.readFileSync('templates/base.html'))
+
 
 lr_server = lr()
 gulp.task "listen", (next) ->
   gutil.log 'livereload listening...'
   lr_server.listen 35729, (err) ->
-    return console.error(err)  if err
+    return console.error(err) if err
     next()
 
+gulp.task "template", ->
+  console.log 'template task!!!'
+  watch {glob: 'templates/**/*.html', name:'html watch~'}, -> # verbose:true,
+    console.log '---AN HTML FILE WAS CHANGED'
+    templates['base']  = handlebars.compile String(fs.readFileSync('templates/base.html'))
+    gulp.start "generate"
 
 gulp.task "html", ->
   watch {glob: 'content/**/*.md', name:'md watch~'}, -> # verbose:true,
+    gulp.start "generate"
+
+gulp.task "generate", ->  
     gulp.src("content/**/*.md")
     .pipe(frontmatter(property: "meta"))
     .pipe(marked())
@@ -42,7 +55,7 @@ gulp.task "html", ->
       property: "meta"
     ))
     .pipe(es.map((file, cb) ->
-      html = base_template(
+      html = templates['base'](
         page: file.meta
         site: site
         content: String(file.contents)
@@ -61,4 +74,4 @@ gulp.task "serve", ->
     ecstatic({ root: __dirname + '/public'  })
   ).listen(8745)
 
-gulp.task 'default', ['html', 'serve', 'less', 'listen']
+gulp.task 'default', ['html', 'serve', 'less', 'listen', 'template']
