@@ -23,16 +23,25 @@ livereload = require "gulp-livereload"
 site =
   title: 'My Site'
 
+imageSite = 
+  title: "Images"
+
 # base_template = handlebars.compile String(fs.readFileSync('templates/base.html'))
 templates = {}
 templates['base']  = handlebars.compile String(fs.readFileSync('templates/base.html'))
 
-image_paths: []
+
 
 gulp.task "image", ->
   watch {glob: ['content/**/*.jpg', 'content/**/*.png'], name:'img watch~'}, -> # verbose:true,
     gulp.src(['content/**/*.jpg', 'content/**/*.png'])
+    .pipe(ssg(imageSite,
+      # property: "meta"
+      prettyUrls: false
+
+    ))
     .pipe(es.map((file, cb) ->
+      console.log imageSite
       # html = templates['base'](
         # page: file.meta
         # site: site
@@ -42,7 +51,6 @@ gulp.task "image", ->
       cb null, file
       return
     )).pipe(gulp.dest("public/")).pipe(livereload(lr_server))
-
     # .pipe(ssg(site,
     #   property: "meta"
     # ))
