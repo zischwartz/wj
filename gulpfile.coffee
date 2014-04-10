@@ -20,56 +20,18 @@ livereload = require "gulp-livereload"
 # exec = require 'gulp-exec'
 # _ = require 'underscore'
 
+util = require 'util'
+
 site =
   title: 'My Site'
 
 imageSite = 
   title: "Images"
 
-# base_template = handlebars.compile String(fs.readFileSync('templates/base.html'))
+# Initial load of templates, get reloaded when one is edited
 templates = {}
 templates['base']  = handlebars.compile String(fs.readFileSync('templates/base.html'))
-
-
-
-gulp.task "image", ->
-  watch {glob: ['content/**/*.jpg', 'content/**/*.png'], name:'img watch~'}, -> # verbose:true,
-    gulp.src(['content/**/*.jpg', 'content/**/*.png'])
-    .pipe(ssg(imageSite,
-      # property: "meta"
-      prettyUrls: false
-
-    ))
-    .pipe(es.map((file, cb) ->
-      console.log imageSite
-      # html = templates['base'](
-        # page: file.meta
-        # site: site
-        # content: String(file.contents)
-      # )
-      # file.contents = new Buffer(html)
-      cb null, file
-      return
-    )).pipe(gulp.dest("public/")).pipe(livereload(lr_server))
-    # .pipe(ssg(site,
-    #   property: "meta"
-    # ))
-    # console.log site
-
-
-# image_globs= ["input/**/**.jpg","input/**/**.png", "input/**/**.gif", "input/**/**.jpeg"]
-# gulp.task 'images', ->
-#   gulp.src(image_globs)
-#     .pipe(through(process_img))
-#     .pipe(gulp.dest("output/"))
-#     .pipe(exec('sips  <%= file.path %> --resampleWidth 280 --out <%= options.label_size(file.path, "-small") %>', {label_size: label_size, silent:true}))
-#     # .pipe(exec('sips  <%= file.path %> --resampleHeight 200 --out <%= options.label_size(file.path, "-small") %>', {label_size: label_size, silent:true}))
-#     # .pipe(exec('sips  <%= file.path %> -z 230 280 --out <%= options.label_size(file.path, "-small") %>', {label_size: label_size, silent:true}))
-# ### Images
-# process_img = (file, cb = false) ->
-#   Cache.set_img file.relative, file.relative
-#   this.queue(file) if this.queue # if we're using it as a gulp task through `through`
-
+templates['images']  = handlebars.compile String(fs.readFileSync('templates/images.html'))
 
 
 lr_server = lr()
@@ -79,11 +41,40 @@ gulp.task "listen", (next) ->
     return console.error(err) if err
     next()
 
+
+
+gulp.task "image", ->
+  watch {glob: ['content/**/*.jpg', 'content/**/*.png'], name:'img watch~'}, -> # verbose:true,
+    gulp.start 'generate_image'
+
+gulp.task "generate_image", ->
+    gulp.src(['content/**/*.jpg', 'content/**/*.png','content/**/images.html'])
+    .pipe(ssg(imageSite,
+      property: "meta"
+      prettyUrls: false
+    ))
+    .pipe(es.map((file, cb) ->
+      # console.log util.inspect(file.meta, {depth: null, colors:true})
+      if path.extname(file.path) is '.html'
+        file.meta.isIndex = true # close enough
+        # render
+        html = templates['images']
+          page: file.meta
+          site: site
+          content: String(file.contents)
+
+        file.contents = new Buffer(html)
+      cb null, file
+      return
+    )).pipe(gulp.dest("public/")).pipe(livereload(lr_server))
+
+
 gulp.task "template", ->
-  watch {glob: 'templates/**/*.html', name:'html watch~'}, -> # verbose:true,
-    # console.log '---AN HTML FILE WAS CHANGED'
+  watch {glob: 'templates/**/*.html', name:'template watch~'}, -> # verbose:true,
     templates['base']  = handlebars.compile String(fs.readFileSync('templates/base.html'))
+    templates['images']  = handlebars.compile String(fs.readFileSync('templates/images.html'))
     gulp.start "generate"
+    gulp.start "generate_image"
 
 gulp.task "html", ->
   watch {glob: 'content/**/*.md', name:'md watch~'}, -> # verbose:true,
@@ -97,6 +88,7 @@ gulp.task "generate", ->
       property: "meta"
     ))
     .pipe(es.map((file, cb) ->
+      # util.inspect file.meta
       html = templates['base'](
         page: file.meta
         site: site
@@ -118,3 +110,17 @@ gulp.task "serve", ->
 
 gulp.task 'default', ['html', 'serve', 'less', 'listen', 'template', 'image']
 
+
+
+# image_globs= ["input/**/**.jpg","input/**/**.png", "input/**/**.gif", "input/**/**.jpeg"]
+# gulp.task 'images', ->
+#   gulp.src(image_globs)
+#     .pipe(through(process_img))
+#     .pipe(gulp.dest("output/"))
+#     .pipe(exec('sips  <%= file.path %> --resampleWidth 280 --out <%= options.label_size(file.path, "-small") %>', {label_size: label_size, silent:true}))
+#     # .pipe(exec('sips  <%= file.path %> --resampleHeight 200 --out <%= options.label_size(file.path, "-small") %>', {label_size: label_size, silent:true}))
+#     # .pipe(exec('sips  <%= file.path %> -z 230 280 --out <%= options.label_size(file.path, "-small") %>', {label_size: label_size, silent:true}))
+# ### Images
+# process_img = (file, cb = false) ->
+#   Cache.set_img file.relative, file.relative
+#   this.queue(file) if this.queue # if we're using it as a gulp task through `through`
