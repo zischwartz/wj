@@ -8,11 +8,9 @@
 	</head>
 
 	<body>
-		<!-- {{#each page.section.files}} {{this.meta.name}} <br>{{/each}} -->
 		{{#each page.section.files}} 
-		{{this.meta.name}}
 			{{#unless this.meta.isIndex}}
-				<img src="{{this.relative}}"> <br>
+				<img src="{{this.relative}}" title="{{this.meta.name}}" alt="{{this.meta.name}}"> <br>
 			{{/unless}}
 		{{/each}}
 		<!-- {{#each page.section.files}} {{this.path}} <br>{{/each}} -->

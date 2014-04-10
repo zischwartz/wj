@@ -1,7 +1,7 @@
 path = require 'path'
 fs = require 'fs'
 http = require 'http'
-
+util = require 'util'
 es = require 'event-stream'
 gulp = require 'gulp'
 gutil = require 'gulp-util'
@@ -15,12 +15,9 @@ handlebars = require 'handlebars'
 ecstatic = require 'ecstatic'
 lr = require "tiny-lr"
 livereload = require "gulp-livereload"
-
 # through = require 'through'
 # exec = require 'gulp-exec'
 # _ = require 'underscore'
-
-util = require 'util'
 
 site =
   title: 'My Site'
@@ -33,7 +30,6 @@ templates = {}
 templates['base']  = handlebars.compile String(fs.readFileSync('templates/base.html'))
 templates['images']  = handlebars.compile String(fs.readFileSync('templates/images.html'))
 
-
 lr_server = lr()
 gulp.task "listen", (next) ->
   gutil.log 'livereload listening...'
@@ -41,33 +37,26 @@ gulp.task "listen", (next) ->
     return console.error(err) if err
     next()
 
-
-
 gulp.task "image", ->
   watch {glob: ['content/**/*.jpg', 'content/**/*.png'], name:'img watch~'}, -> # verbose:true,
     gulp.start 'generate_image'
 
 gulp.task "generate_image", ->
     gulp.src(['content/**/*.jpg', 'content/**/*.png','content/**/images.html'])
-    .pipe(ssg(imageSite,
+    .pipe ssg imageSite,
       property: "meta"
       prettyUrls: false
-    ))
     .pipe(es.map((file, cb) ->
       # console.log util.inspect(file.meta, {depth: null, colors:true})
       if path.extname(file.path) is '.html'
         file.meta.isIndex = true # close enough
-        # render
-        html = templates['images']
+        html = templates['images'] # render
           page: file.meta
           site: site
           content: String(file.contents)
-
         file.contents = new Buffer(html)
       cb null, file
-      return
     )).pipe(gulp.dest("public/")).pipe(livereload(lr_server))
-
 
 gulp.task "template", ->
   watch {glob: 'templates/**/*.html', name:'template watch~'}, -> # verbose:true,
@@ -84,16 +73,12 @@ gulp.task "generate", ->
     gulp.src("content/**/*.md")
     .pipe(frontmatter(property: "meta"))
     .pipe(marked())
-    .pipe(ssg(site,
-      property: "meta"
-    ))
+    .pipe ssg site, {property: "meta"}
     .pipe(es.map((file, cb) ->
-      # util.inspect file.meta
-      html = templates['base'](
+      html = templates['base'] # render
         page: file.meta
         site: site
         content: String(file.contents)
-      )
       file.contents = new Buffer(html)
       cb null, file
       return
