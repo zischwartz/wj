@@ -49,40 +49,17 @@ gulp.task "listen", (next) ->
     return console.error(err) if err
     next()
 
-# gulp.task "image", ->
-#   watch {glob: ['content/**/*.jpg', 'content/**/*.png'], name:'img watch~'}, -> # verbose:true,
-#     gulp.start 'generate_image'
-
-# gulp.task "generate_image", ->
-#     gulp.src(['content/**/*.jpg', 'content/**/*.png','content/**/images.html'])
-#     .pipe ssg imageSite,
-#       property: "meta"
-#       prettyUrls: false
-#     .pipe(es.map((file, cb) ->
-#       # console.log util.inspect(file.meta, {depth: null, colors:true})
-#       if path.extname(file.path) is '.html'
-#         file.meta.isIndex = true # close enough
-#         html = templates['images'] # render
-#           page: file.meta
-#           site: site
-#           content: String(file.contents)
-#         file.contents = new Buffer(html)
-#       cb null, file
-#     )).pipe(gulp.dest("public/")).pipe(livereload(lr_server))
 
 gulp.task "template", ->
-  watch {glob: md_glob, name:'template watch~'}, -> # verbose:true,
+  watch {glob: 'templates/*.html', name:'template watch~'}, -> # verbose:true,
     templates['base']  = handlebars.compile String(fs.readFileSync('templates/base.html'))
     templates['images']  = handlebars.compile String(fs.readFileSync('templates/images.html'))
     gulp.start "generate"
-    # gulp.start "generate_image"
 
 gulp.task "html", ->
   watch {glob: md_glob, name:'md watch~'}, -> # verbose:true,
     gulp.start "generate"
 
-# close!
-# problem is when we call restore, we lose the processed md files, frontmatter and marked womp.
 gulp.task "generate", ->
     md_filter = gulpFilter("**/**.md")
     gulp.src(content_glob)
@@ -95,8 +72,8 @@ gulp.task "generate", ->
     .pipe(es.map((file, cb) ->
       if path.extname(file.path) not in image_extnames
         # console.log file.meta
-        # console.log util.inspect file.meta
         # console.log String(file.contents)
+        console.log file.meta
         html = templates['base'] # render
           page: file.meta
           site: site
@@ -105,7 +82,6 @@ gulp.task "generate", ->
       cb null, file
 
     ))
-    # .pipe(md_filter.restore())
     .pipe(gulp.dest("public/")).pipe(livereload(lr_server))
 
 gulp.task "less", ->

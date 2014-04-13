@@ -8,20 +8,30 @@
 	</head>
 
 	<body>
-	<h2>Page</h2>
+<!-- 	<h2>Page</h2>
 	{{#each page}}
 		<p><strong>{{@key}} </strong>: {{this}}</p>
 	{{/each}}
+ -->
+
+ 	{{#each page.captions}}
+ 		{{#each this}} {{@key}} {{this}} {{/each}}
+ 	{{/each}}
 
 	<h2>Page.section</h2>
-	{{#each page.section}}
-		<p><strong>{{@key}} </strong>: {{this}}</p>
+	{{#each page.section.files}}
+		<!-- <p><strong>{{@key}} </strong>: {{this}}</p> -->
+		{{this.relative}}
+		{{this.meta.name}}
+		{{this.meta}}
+		<br><br>
 	{{/each}}
 	
-	<h2>Site.index</h2>
+
+<!-- 	<h2>Site.index</h2>
 	{{#each site.index}}
 		<p><strong>{{@key}}</strong> : {{this}}</p>
-	{{/each}}
+	{{/each}} -->
 
 	<h1>{{page.title}}</h1>
 	{{{content}}}
