@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "gulp-ssg": "~0.4.4",
     "gulp-front-matter": "~1.0.0",
     "event-stream": "~3.1.1",
     "gulp-marked": "~0.2.0",
@@ -25,6 +24,8 @@
     "ecstatic": "~0.4.12",
     "tiny-lr": "0.0.5",
     "gulp-livereload": "~1.2.0",
-    "gulp-util": "~2.2.14"
+    "gulp-util": "~2.2.14",
+    "gulp-filter": "~0.4.0",
+    "gulp-ssg": "~0.4.4"
   }
 }

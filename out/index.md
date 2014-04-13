@@ -1,5 +1,5 @@
 ---
-title: The TITLE of the Index Page
+title: The Title of the Index Page
 stuff: ABCDEFGH
 ---
 

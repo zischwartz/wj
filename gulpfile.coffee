@@ -19,11 +19,23 @@ livereload = require "gulp-livereload"
 # exec = require 'gulp-exec'
 # _ = require 'underscore'
 
+gulpFilter = require 'gulp-filter'
+
 site =
   title: 'My Site'
 
-imageSite = 
-  title: "Images"
+# imageSite = 
+#   title: "Images"
+
+image_glob = ["content/**/**.jpg","content/**/**.png", "content/**/**.gif", "content/**/**.jpeg"]
+content_glob = ["content/**/*.md", "content/**/**.jpg","content/**/**.png", "content/**/**.gif", "content/**/**.jpeg"]
+md_glob = ["content/**/*.md"]
+
+image_extnames = ('.'+s.split('.')[-1..] for s in image_glob)
+
+# valid glob
+# gulp.src(['./**/*.js','!./node_modules/**','!./libs/**'])
+
 
 # Initial load of templates, get reloaded when one is edited
 templates = {}
@@ -37,52 +49,64 @@ gulp.task "listen", (next) ->
     return console.error(err) if err
     next()
 
-gulp.task "image", ->
-  watch {glob: ['content/**/*.jpg', 'content/**/*.png'], name:'img watch~'}, -> # verbose:true,
-    gulp.start 'generate_image'
+# gulp.task "image", ->
+#   watch {glob: ['content/**/*.jpg', 'content/**/*.png'], name:'img watch~'}, -> # verbose:true,
+#     gulp.start 'generate_image'
 
-gulp.task "generate_image", ->
-    gulp.src(['content/**/*.jpg', 'content/**/*.png','content/**/images.html'])
-    .pipe ssg imageSite,
-      property: "meta"
-      prettyUrls: false
+# gulp.task "generate_image", ->
+#     gulp.src(['content/**/*.jpg', 'content/**/*.png','content/**/images.html'])
+#     .pipe ssg imageSite,
+#       property: "meta"
+#       prettyUrls: false
+#     .pipe(es.map((file, cb) ->
+#       # console.log util.inspect(file.meta, {depth: null, colors:true})
+#       if path.extname(file.path) is '.html'
+#         file.meta.isIndex = true # close enough
+#         html = templates['images'] # render
+#           page: file.meta
+#           site: site
+#           content: String(file.contents)
+#         file.contents = new Buffer(html)
+#       cb null, file
+#     )).pipe(gulp.dest("public/")).pipe(livereload(lr_server))
+
+gulp.task "template", ->
+  watch {glob: md_glob, name:'template watch~'}, -> # verbose:true,
+    templates['base']  = handlebars.compile String(fs.readFileSync('templates/base.html'))
+    templates['images']  = handlebars.compile String(fs.readFileSync('templates/images.html'))
+    gulp.start "generate"
+    # gulp.start "generate_image"
+
+gulp.task "html", ->
+  watch {glob: md_glob, name:'md watch~'}, -> # verbose:true,
+    gulp.start "generate"
+
+# close!
+# problem is when we call restore, we lose the processed md files, frontmatter and marked womp.
+gulp.task "generate", ->
+    md_filter = gulpFilter("**/**.md")
+    gulp.src(content_glob)
+    .pipe(md_filter)
+    .pipe(frontmatter(property: "meta"))
+    .pipe(marked())
+    .pipe(md_filter.restore())
+    .pipe(ssg(site, {property: "meta", prettyUrls: '.md'}))
+    .pipe(gulp.dest("public/")) #.pipe(livereload(lr_server))
     .pipe(es.map((file, cb) ->
-      # console.log util.inspect(file.meta, {depth: null, colors:true})
-      if path.extname(file.path) is '.html'
-        file.meta.isIndex = true # close enough
-        html = templates['images'] # render
+      if path.extname(file.path) not in image_extnames
+        # console.log file.meta
+        # console.log util.inspect file.meta
+        # console.log String(file.contents)
+        html = templates['base'] # render
           page: file.meta
           site: site
           content: String(file.contents)
         file.contents = new Buffer(html)
       cb null, file
-    )).pipe(gulp.dest("public/")).pipe(livereload(lr_server))
 
-gulp.task "template", ->
-  watch {glob: 'templates/**/*.html', name:'template watch~'}, -> # verbose:true,
-    templates['base']  = handlebars.compile String(fs.readFileSync('templates/base.html'))
-    templates['images']  = handlebars.compile String(fs.readFileSync('templates/images.html'))
-    gulp.start "generate"
-    gulp.start "generate_image"
-
-gulp.task "html", ->
-  watch {glob: 'content/**/*.md', name:'md watch~'}, -> # verbose:true,
-    gulp.start "generate"
-
-gulp.task "generate", ->  
-    gulp.src("content/**/*.md")
-    .pipe(frontmatter(property: "meta"))
-    .pipe(marked())
-    .pipe ssg site, {property: "meta"}
-    .pipe(es.map((file, cb) ->
-      html = templates['base'] # render
-        page: file.meta
-        site: site
-        content: String(file.contents)
-      file.contents = new Buffer(html)
-      cb null, file
-      return
-    )).pipe(gulp.dest("public/")).pipe(livereload(lr_server))
+    ))
+    # .pipe(md_filter.restore())
+    .pipe(gulp.dest("public/")).pipe(livereload(lr_server))
 
 gulp.task "less", ->
   gulp.src("style/style.less").pipe(watch()).pipe(less())
@@ -93,11 +117,14 @@ gulp.task "serve", ->
     ecstatic({ root: __dirname + '/public'  })
   ).listen(8745)
 
-gulp.task 'default', ['html', 'serve', 'less', 'listen', 'template', 'image']
+gulp.task 'default', ['html', 'serve', 'less', 'listen', 'template']
+# gulp.task 'default', ['serve', 'less', 'listen', 'generate']
 
 
 
-# image_globs= ["input/**/**.jpg","input/**/**.png", "input/**/**.gif", "input/**/**.jpeg"]
+
+
+
 # gulp.task 'images', ->
 #   gulp.src(image_globs)
 #     .pipe(through(process_img))
