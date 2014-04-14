@@ -23,6 +23,7 @@ gulpFilter = require 'gulp-filter'
 
 site =
   title: 'My Site'
+  baseUrl: '/'
 
 # imageSite = 
 #   title: "Images"
@@ -40,7 +41,6 @@ image_extnames = ('.'+s.split('.')[-1..] for s in image_glob)
 # Initial load of templates, get reloaded when one is edited
 templates = {}
 templates['base']  = handlebars.compile String(fs.readFileSync('templates/base.html'))
-templates['images']  = handlebars.compile String(fs.readFileSync('templates/images.html'))
 
 lr_server = lr()
 gulp.task "listen", (next) ->
@@ -53,7 +53,6 @@ gulp.task "listen", (next) ->
 gulp.task "template", ->
   watch {glob: 'templates/*.html', name:'template watch~'}, -> # verbose:true,
     templates['base']  = handlebars.compile String(fs.readFileSync('templates/base.html'))
-    templates['images']  = handlebars.compile String(fs.readFileSync('templates/images.html'))
     gulp.start "generate"
 
 gulp.task "html", ->
@@ -66,18 +65,27 @@ gulp.task "generate", ->
     .pipe(md_filter)
     .pipe(frontmatter(property: "meta"))
     .pipe(marked())
+    .pipe(es.map((file, cb) ->
+      file.meta.isHtml = true # hacky
+      cb null, file
+      ))
     .pipe(md_filter.restore())
     .pipe(ssg(site, {property: "meta", prettyUrls: '.md'}))
-    .pipe(gulp.dest("public/")) #.pipe(livereload(lr_server))
     .pipe(es.map((file, cb) ->
+      console.log file.meta.name
+      console.log file.meta.sectionUrl
       if path.extname(file.path) not in image_extnames
-        # console.log file.meta
-        # console.log String(file.contents)
-        console.log file.meta
+        # console.log file.meta.name
+        # console.log file.meta.section.name
+        console.log ( f.meta.name  for f in file.meta.section.files)
+        # captions = file.meta?captions 
         html = templates['base'] # render
           page: file.meta
           site: site
+          base: site.baseUrl
           content: String(file.contents)
+          # console.log site.index.sections
+          # console.log '----------------------------------------------------'
         file.contents = new Buffer(html)
       cb null, file
 
@@ -96,10 +104,22 @@ gulp.task "serve", ->
 gulp.task 'default', ['html', 'serve', 'less', 'listen', 'template']
 # gulp.task 'default', ['serve', 'less', 'listen', 'generate']
 
-
-
-
-
+domain = require('domain')
+d = domain.create()
+d.on 'error', (err)->
+  console.log err
+handlebars.registerHelper 'json', (obj) ->
+  d.run ->
+    out = {}
+    for key, value of obj
+      out[key]= {}
+      if typeof value in ['string', 'boolean']
+        out[key]= value
+      else
+        for i, j of value
+          if typeof j in ['string', 'boolean']
+            out[key][i] = [j]
+    return JSON.stringify(out)
 
 # gulp.task 'images', ->
 #   gulp.src(image_globs)
