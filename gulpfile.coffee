@@ -104,6 +104,10 @@ gulp.task "serve", ->
 gulp.task 'default', ['html', 'serve', 'less', 'listen', 'template']
 # gulp.task 'default', ['serve', 'less', 'listen', 'generate']
 
+handlebars.registerHelper 'replaceUnderscores', (s) ->
+  s.replace(/_/g,' ')
+
+
 domain = require('domain')
 d = domain.create()
 d.on 'error', (err)->

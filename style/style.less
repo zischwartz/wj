@@ -1,8 +1,32 @@
+@import 'normalize.less';
+@import 'preboot.less';
+
 body {
     background-color: #f2f2f2;
+     padding: 15px; //because of .row's negative margins. maybe I'm using row wrong?
+
     h1 {
     	font-variant: small-caps;
     	font-size: 3em;
     	// color: red;
     }
+    a {
+    	text-decoration: none;
+    }
+}
+
+
+.wrapper {
+  .make-row();
+}
+.content-main, #nav {
+  .make-column(8);
+  .make-column-offset(2);
+}
+
+#nav {
+	padding-top: 10px;
+	a {
+		margin-right: 10px;
+	}
 }
