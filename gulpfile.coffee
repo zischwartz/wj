@@ -19,7 +19,10 @@ livereload = require "gulp-livereload"
 # exec = require 'gulp-exec'
 # _ = require 'underscore'
 
-gulpFilter = require 'gulp-filter'
+gulpFilter = require 'gulp-filter' # non standard version
+
+wj_helpers = require "./wj-helpers"
+handlebars = wj_helpers.registerHbs handlebars  # registers our helpers
 
 site =
   title: 'My Site'
@@ -103,10 +106,6 @@ gulp.task "serve", ->
 
 gulp.task 'default', ['html', 'serve', 'less', 'listen', 'template']
 # gulp.task 'default', ['serve', 'less', 'listen', 'generate']
-
-handlebars.registerHelper 'replaceUnderscores', (s) ->
-  s.replace(/_/g,' ')
-
 
 domain = require('domain')
 d = domain.create()

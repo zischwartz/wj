@@ -1,9 +1,13 @@
 @import 'normalize.less';
 @import 'preboot.less';
 
+@body-background: #FDFDFD;
+
 body {
-    background-color: #f2f2f2;
-     padding: 15px; //because of .row's negative margins. maybe I'm using row wrong?
+    // background-color: #f2f2f2;
+    // background-color: #F8F8F8;
+    background-color: @body-background;
+    padding: 15px; //because of .row's negative margins. maybe I'm using row wrong?
 
     h1 {
     	font-variant: small-caps;
@@ -12,6 +16,7 @@ body {
     }
     a {
     	text-decoration: none;
+    	color: black;
     }
 }
 
@@ -25,8 +30,28 @@ body {
 }
 
 #nav {
-	padding-top: 10px;
 	a {
-		margin-right: 10px;
+		display: inline-block;
+		font-family: @font-family-sans-serif;
+		letter-spacing: 1px;
+		padding: 20px;
+		text-transform: uppercase;
+		font-size: @font-size-large;
+		// text-transform: capitalize;
+		&:first-child {
+			margin-left: -20px;
+
+		}
+		&:hover {
+			background-color: @black-10;
+		}
+	} // end a
+}
+
+.content-main {
+	a {
+		color: @brand-primary;
+		// background-color: darken(@body-background, 8%);
+		// text-decoration: underline;
 	}
 }

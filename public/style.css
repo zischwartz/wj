@@ -337,7 +337,7 @@ table {
  * Some variables and mixins from Bootstrap (Apache 2 license).
  */
 body {
-  background-color: #f2f2f2;
+  background-color: #fdfdfd;
   padding: 15px;
 }
 body h1 {
@@ -346,6 +346,7 @@ body h1 {
 }
 body a {
   text-decoration: none;
+  color: black;
 }
 .wrapper {
   margin-left: -15px;
@@ -383,9 +384,20 @@ body a {
     margin-left: 16.66666667%;
   }
 }
-#nav {
-  padding-top: 10px;
-}
 #nav a {
-  margin-right: 10px;
+  display: inline-block;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: 1px;
+  padding: 20px;
+  text-transform: uppercase;
+  font-size: 17.5px;
+}
+#nav a:first-child {
+  margin-left: -20px;
+}
+#nav a:hover {
+  background-color: #e6e6e6;
+}
+.content-main a {
+  color: #428bca;
 }

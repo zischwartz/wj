@@ -13,10 +13,13 @@
 		<p><strong>{{@key}} </strong>: {{this}}</p>
 	{{/each}}
  -->
+
  	<div class='wrapper'>
 	 	<div id='nav'>
 		 	<!-- {{json page.section.files}} -->
 			{{!-- <strong>other sections (folders in <code>content</code>) : </strong> --}}
+			<a href="{{site.baseUrl}}">Home</a>
+
 			{{#each site.index.sections}}
 				<a href="{{this.url}}"> {{replaceUnderscores this.name}}</a>
 			{{/each}}
@@ -25,37 +28,36 @@
  	</div>
 
  	<div class='wrapper'>
- 	<div class='content-main'>
+	 	<div class='content-main'>
 
-	<h1>{{page.title}}</h1>
-	{{{content}}}
-	
+		<h1>{{page.title}}</h1>
+		{{{content}}}
+
 
  	{{#if page.isIndex}}
-		<strong>other files (in this folder) : </strong> 
+ 	{{!-- Make these images --}}
 		{{#each page.section.files}}
-			{{#if this.meta.isHtml}}
-			{{#unless this.meta.isIndex}}
-			<a href='{{this.meta.url}}'>{{this.meta.name}} - {{this.meta.title}}
-			 [{{this.meta.url}}]</a> --
-			 <!-- {{{json this.meta}}} {{{this.relative}}}-->
-			{{/unless}}
-			{{/if }}
+			{{#ifPage}}
+				- <a href='{{this.meta.url}}'>{{default this.meta.title this.meta.name}}</a><br>
+			{{/ifPage}}
 		{{/each}}
 
+		{{!-- Images --}}
 		{{#each page.section.files}}
 			{{#unless this.meta.isHtml}}
 				<img src="{{../../site.baseUrl}}{{this.relative}}" title="{{this.meta.name}}" alt="{{this.meta.name}}">
 			{{/unless}}
 		{{/each}}
 
-	{{/if}} {{!-- /index --}}
+	{{/if}} {{!-- / is index --}}
 
-	</div> {{!-- end content-main --}}
+		</div> {{!-- end content-main --}}
 	</div> {{!-- end wrapper --}}
+
 	<script>document.write('<script src="http://'+ location.host.split(':')[0] + ':35729/livereload.js"></' + 'script>')</script>
 
   </body>
+  {{!-- FOR IMAGES --}}
 {{!-- 	 	{{#each page.captions}}
 	 		{{#each this}}<code>{{@key}}</code> - -{{this}} {{/each}}<br>
 	 	{{/each}} --}}
