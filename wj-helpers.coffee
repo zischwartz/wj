@@ -1,3 +1,5 @@
+_str = require("underscore.string")
+
 module.exports =
 	registerHbs: (handlebars)->
 		handlebars.registerHelper 'replaceUnderscores', (s) ->
@@ -28,3 +30,6 @@ module.exports =
 		            out[key][i] = [j]
 		    return JSON.stringify(out)
 		return handlebars
+
+	  	handlebars.registerHelper "slugify", (str) ->
+	    	new Handlebars.SafeString(_str.slugify(str))
