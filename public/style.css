@@ -337,6 +337,7 @@ table {
  * Some variables and mixins from Bootstrap (Apache 2 license).
  */
 body {
+  font-size: 17px;
   background-color: #fdfdfd;
   padding: 15px;
 }
@@ -390,7 +391,7 @@ body a {
   letter-spacing: 1px;
   padding: 20px;
   text-transform: uppercase;
-  font-size: 17.5px;
+  font-size: 21.25px;
 }
 #nav a:first-child {
   margin-left: -20px;

@@ -107,22 +107,6 @@ gulp.task "serve", ->
 gulp.task 'default', ['html', 'serve', 'less', 'listen', 'template']
 # gulp.task 'default', ['serve', 'less', 'listen', 'generate']
 
-domain = require('domain')
-d = domain.create()
-d.on 'error', (err)->
-  console.log err
-handlebars.registerHelper 'json', (obj) ->
-  d.run ->
-    out = {}
-    for key, value of obj
-      out[key]= {}
-      if typeof value in ['string', 'boolean']
-        out[key]= value
-      else
-        for i, j of value
-          if typeof j in ['string', 'boolean']
-            out[key][i] = [j]
-    return JSON.stringify(out)
 
 # gulp.task 'images', ->
 #   gulp.src(image_globs)

@@ -3,22 +3,25 @@
 
 @body-background: #FDFDFD;
 
+@font-size-base: 17px;
+
+
 body {
     // background-color: #f2f2f2;
     // background-color: #F8F8F8;
+    font-size: @font-size-base;
     background-color: @body-background;
     padding: 15px; //because of .row's negative margins. maybe I'm using row wrong?
-
     h1 {
     	font-variant: small-caps;
     	font-size: 3em;
-    	// color: red;
     }
     a {
     	text-decoration: none;
     	color: black;
     }
 }
+
 
 
 .wrapper {
@@ -53,5 +56,13 @@ body {
 		color: @brand-primary;
 		// background-color: darken(@body-background, 8%);
 		// text-decoration: underline;
+	}
+}
+
+
+
+@media screen and (min-width: 820px) {
+	body {
+
 	}
 }

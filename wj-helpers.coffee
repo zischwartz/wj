@@ -10,4 +10,21 @@ module.exports =
 		handlebars.registerHelper "ifPage", (context, options) ->
 		  if @meta.isHtml and not @meta.isIndex
 		    return context.fn(this)
+
+		domain = require('domain')
+		d = domain.create()
+		d.on 'error', (err)->
+		  console.log err
+		handlebars.registerHelper 'json', (obj) ->
+		  d.run ->
+		    out = {}
+		    for key, value of obj
+		      out[key]= {}
+		      if typeof value in ['string', 'boolean']
+		        out[key]= value
+		      else
+		        for i, j of value
+		          if typeof j in ['string', 'boolean']
+		            out[key][i] = [j]
+		    return JSON.stringify(out)
 		return handlebars
