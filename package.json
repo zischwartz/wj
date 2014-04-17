@@ -26,6 +26,7 @@
     "gulp-livereload": "~1.2.0",
     "gulp-util": "~2.2.14",
     "gulp-filter": "~0.4.0",
-    "gulp-ssg": "~0.4.4"
+    "gulp-ssg": "~0.4.4",
+    "underscore.string": "~2.3.3"
   }
 }

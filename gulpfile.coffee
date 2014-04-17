@@ -67,12 +67,12 @@ gulp.task "generate", ->
     .pipe(md_filter.restore())
     .pipe(ssg(site, {property: "meta", prettyUrls: '.md'}))
     .pipe(es.map((file, cb) ->
-      console.log file.meta.name
-      console.log file.meta.sectionUrl
+      # console.log file.meta.name
+      # console.log file.meta.sectionUrl
       if path.extname(file.path) not in image_extnames
         # console.log file.meta.name
         # console.log file.meta.section.name
-        console.log ( f.meta.name  for f in file.meta.section.files)
+        # console.log ( f.meta.name  for f in file.meta.section.files)
         # captions = file.meta?captions 
         html = templates['base'] # render
           page: file.meta
