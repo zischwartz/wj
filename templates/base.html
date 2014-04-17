@@ -34,7 +34,7 @@
 		{{!-- Images in this Dir --}}
 		{{#each page.section.files}}
 			{{#unless meta.isHtml}}
-				<img src="{{../../site.baseUrl}}{{relative}}" title="{{meta.name}}" alt="{{meta.name}}">
+				<img src="{{../../site.baseUrl}}{{relative}}" title="{{meta.name}}" alt="{{meta.name}}" class="big_image">
 			{{/unless}}
 		{{/each}}
 	{{/if}} {{!-- / is index --}}

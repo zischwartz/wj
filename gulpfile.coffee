@@ -5,7 +5,7 @@ util = require 'util'
 es = require 'event-stream'
 gulp = require 'gulp'
 gutil = require 'gulp-util'
-ssg = require 'gulp-ssg'
+ssg = require 'gulp-ssg' # non standard version
 watch = require 'gulp-watch'
 marked = require 'gulp-marked'
 less = require 'gulp-less'
@@ -15,12 +15,10 @@ handlebars = require 'handlebars'
 ecstatic = require 'ecstatic'
 lr = require "tiny-lr"
 livereload = require "gulp-livereload"
+gulpFilter = require 'gulp-filter'
 # through = require 'through'
 # exec = require 'gulp-exec'
 # _ = require 'underscore'
-
-gulpFilter = require 'gulp-filter' # non standard version
-
 wj_helpers = require "./wj-helpers"
 handlebars = wj_helpers.registerHbs handlebars  # registers our helpers
 
@@ -28,18 +26,12 @@ site =
   title: 'My Site'
   baseUrl: '/'
 
-# imageSite = 
-#   title: "Images"
-
+# gulp.src(['./**/*.js','!./node_modules/**','!./libs/**']) # e.g. 
 image_glob = ["content/**/**.jpg","content/**/**.png", "content/**/**.gif", "content/**/**.jpeg"]
 content_glob = ["content/**/*.md", "content/**/**.jpg","content/**/**.png", "content/**/**.gif", "content/**/**.jpeg"]
 md_glob = ["content/**/*.md"]
 
 image_extnames = ('.'+s.split('.')[-1..] for s in image_glob)
-
-# valid glob
-# gulp.src(['./**/*.js','!./node_modules/**','!./libs/**'])
-
 
 # Initial load of templates, get reloaded when one is edited
 templates = {}
