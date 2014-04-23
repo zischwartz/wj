@@ -17,7 +17,7 @@ lr = require "tiny-lr"
 livereload = require "gulp-livereload"
 gulpFilter = require 'gulp-filter'
 # through = require 'through'
-# exec = require 'gulp-exec'
+exec = require 'gulp-exec'
 # _ = require 'underscore'
 wj_helpers = require "./wj-helpers"
 handlebars = wj_helpers.registerHbs handlebars  # registers our helpers
@@ -91,14 +91,21 @@ gulp.task "less", ->
   gulp.src("style/style.less").pipe(watch()).pipe(less())
   .pipe(gulp.dest("public/")).pipe(livereload(lr_server))
 
+gulp.task "image_resize", ->
+    gulp.src(image_glob)
+        .pipe(gulp.dest("public/"))
+        # .pipe(exec('sips  <%= file.path %> --resampleHeight 200 --out <%= options.label_size(file.path, "-small") %>', {label_size: wj_helpers.label_size, silent:true}))
+        .pipe(exec('sips  <%= file.path %> --resampleWidth 300 --out <%= options.label_size(file.path, "-small") %>', {label_size: wj_helpers.label_size, silent:true}))
+
 gulp.task "serve", ->
   http.createServer(
     ecstatic({ root: __dirname + '/public'  })
-  ).listen(8745)
+  ).listen(8888)
 
 gulp.task 'default', ['html', 'serve', 'less', 'listen', 'template']
 # gulp.task 'default', ['serve', 'less', 'listen', 'generate']
 
+# ### HBS Helpers
 
 # gulp.task 'images', ->
 #   gulp.src(image_globs)

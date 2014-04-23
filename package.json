@@ -27,6 +27,7 @@
     "gulp-util": "~2.2.14",
     "gulp-filter": "~0.4.0",
     "gulp-ssg": "~0.4.4",
-    "underscore.string": "~2.3.3"
+    "underscore.string": "~2.3.3",
+    "gulp-exec": "~2.0.0"
   }
 }

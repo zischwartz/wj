@@ -1,6 +1,16 @@
 _str = require("underscore.string")
+path = require("path")
+
+label_size = (path, size) ->
+  tokens = path.split('.')
+  ext= tokens.pop()
+  tokens[-1..] = tokens[-1..]+size
+  tokens.push(ext)
+  tokens.join('.')
 
 module.exports =
+    label_size: label_size
+
     registerHbs: (handlebars)->
         handlebars.registerHelper 'replaceUnderscores', (s) ->
           s.replace(/_/g,' ')
@@ -33,6 +43,9 @@ module.exports =
         handlebars.registerHelper "slugify", (str) ->
             new handlebars.SafeString(_str.slugify(str))
         
+        handlebars.registerHelper 'label_size', (path, size)->
+          label_size(path, size)
+
         handlebars.registerHelper "imagesInSect", (context, options) ->
           # console.log this
           res = ''
