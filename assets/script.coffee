@@ -2,11 +2,10 @@ console.log 'hi'
 $ ->
 
 	$('a.thumb_image').on 'click', (e)->
-		$('.wrapper').fadeOut()
+		$('.wrapper').fadeOut('fast')
 		e.preventDefault()
 		e.stopPropagation()
 		href = $(@).attr 'href'
-		console.log href
 		$('body').addClass 'showing_image'
 		$('body').css
 			'background-image': "url('#{href}')"
