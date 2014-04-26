@@ -88,8 +88,12 @@ gulp.task "generate", ->
     .pipe(gulp.dest("public/")).pipe(livereload(lr_server))
 
 gulp.task "less", ->
-  gulp.src("style/style.less").pipe(watch()).pipe(less())
+  gulp.src("assets/style.less").pipe(watch()).pipe(less())
   .pipe(gulp.dest("public/")).pipe(livereload(lr_server))
+
+gulp.task "coffee", ->
+  gulp.src("assets/script.coffee").pipe(watch()).pipe(coffee({bare: true}).on('error', gutil.log)) # .pipe(concat('script.js'))
+  .pipe(gulp.dest("./public")).pipe(livereload(lr_server))
 
 gulp.task "image_resize", ->
     gulp.src(image_glob)
@@ -102,7 +106,7 @@ gulp.task "serve", ->
     ecstatic({ root: __dirname + '/public'  })
   ).listen(8888)
 
-gulp.task 'default', ['html', 'serve', 'less', 'listen', 'template']
+gulp.task 'default', ['html', 'serve', 'less', 'coffee', 'listen', 'template']
 # gulp.task 'default', ['serve', 'less', 'listen', 'generate']
 
 # ### HBS Helpers

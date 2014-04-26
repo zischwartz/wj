@@ -32,19 +32,22 @@
 		{{/each}}
 
 		{{#imagesInSect}}
-			<a href='{{href}}' class='thumb_image' style="background-image: url('{{../../site.baseUrl}}{{label_size relative '-small'}}')"></a>
+			<a href='{{../../site.baseUrl}}{{relative}}' class='thumb_image' style="background-image: url('{{../../site.baseUrl}}{{label_size relative '-small'}}')"></a>
 			{{!-- <img src="{{../../site.baseUrl}}{{label_size relative '-small'}}" title="{{meta.name}}" id="{{slugify meta.name}}" alt="{{meta.name}}" class="thumb_image"> --}}
 
 		{{/imagesInSect}}
 
-		{{#imagesInSect}}
+{{!-- 		{{#imagesInSect}}
 			<img src="{{../../site.baseUrl}}{{relative}}" title="{{meta.name}}" id="{{slugify meta.name}}" alt="{{meta.name}}" class="big_image">
-		{{/imagesInSect}}
+		{{/imagesInSect}} --}}
 
 	{{/if}}
 
 		</div> {{!-- end content-main --}}
 	</div> {{!-- end wrapper --}}
+	
+	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src='/script.js'></script>
 
 	<script>document.write('<script src="http://'+ location.host.split(':')[0] + ':35729/livereload.js"></' + 'script>')</script>
 
