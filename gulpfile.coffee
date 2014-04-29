@@ -18,6 +18,7 @@ livereload = require "gulp-livereload"
 gulpFilter = require 'gulp-filter'
 # through = require 'through'
 exec = require 'gulp-exec'
+awspublish = require 'gulp-awspublish'
 # _ = require 'underscore'
 wj_helpers = require "./wj-helpers"
 handlebars = wj_helpers.registerHbs handlebars  # registers our helpers
@@ -105,6 +106,17 @@ gulp.task "serve", ->
   http.createServer(
     ecstatic({ root: __dirname + '/public'  })
   ).listen(8888)
+
+publisher = awspublish.create({ key: '...',  secret: '...', bucket: '...' })
+publisher = awspublish.create
+  key: "your_key"
+  secret: "your_secret_key"
+  bucket: 'your_bucket'
+
+gulp.task "publish", ->
+  gulp.src('public/**/**')
+  .pipe(publisher.publish())
+  .pipe(awspublish.reporter())
 
 gulp.task 'default', ['html', 'serve', 'less', 'coffee', 'listen', 'template']
 # gulp.task 'default', ['serve', 'less', 'listen', 'generate']
