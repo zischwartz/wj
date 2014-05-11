@@ -1,47 +1,36 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html>
     <head>
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <title>{{site.title}} - {{page.title}}</title>
+      <title>{{site.title}}{{#if page.title}} - {{page.title}}{{/if}}</title>
 		<link rel="stylesheet" href="/style.css">
 	</head>
 	<body>
-	 	<div class='wrapper'>
-		 	<div id='nav'>
-		 		{{!-- Sections --}}
-				<!-- <a href="{{site.baseUrl}}">Home</a> -->
-				{{#each site.index.sections}}
+ 	<div class='wrapper'>
+	 	<div id='nav'>
+	 		{{!-- Sections --}} <!-- <a href="{{site.baseUrl}}">Home</a> -->
+			{{#each site.index.sections}}
 				<a href="{{url}}"> {{replaceUnderscores name}}</a>
-				{{/each}}
-		 	</div> {{!-- /#nav --}}
-	 	</div> {{!-- /.wrapper --}}
+			{{/each}}
+	 	</div> {{!-- /#nav --}}
+ 	</div> {{!-- /.wrapper --}}
 
  	<div class='wrapper'>
 	  <div class='content-main'>
 			<h1>{{page.title}}</h1>
 			{{{content}}}
 
-
- 	{{#if page.isIndex}}
- 		{{!-- TODO Make these images --}}
-		{{#each page.section.files}}
-			{{#ifPage}}
-				- <a href='{{meta.url}}'>{{default meta.title meta.name}}</a><br>
-			{{/ifPage}}
-		{{/each}}
-
-		{{#imagesInSect}}
-			<a href='{{../../site.baseUrl}}{{relative}}' class='thumb_image' style="background-image: url('{{../../site.baseUrl}}{{label_size relative '-small'}}')"></a>
-			{{!-- <img src="{{../../site.baseUrl}}{{label_size relative '-small'}}" title="{{meta.name}}" id="{{slugify meta.name}}" alt="{{meta.name}}" class="thumb_image"> --}}
-
-		{{/imagesInSect}}
-
- 		{{#imagesInSect}}
-			<img src="{{../../site.baseUrl}}{{relative}}" title="{{meta.name}}" id="{{slugify meta.name}}" alt="{{meta.name}}" class="big_image">
-		{{/imagesInSect}}
-
-	{{/if}}
+		 	{{#if page.isIndex}}
+				{{#each page.section.files}}
+					{{#ifPage}}
+						- <a href='{{meta.url}}'>{{default meta.title meta.name}}</a><br>
+					{{/ifPage}}
+				{{/each}}
+		 		{{#imagesInSect}}
+					<img src="{{../../site.baseUrl}}{{relative}}" title="{{meta.name}}" id="{{slugify meta.name}}" alt="{{meta.name}}" class="big_image">
+				{{/imagesInSect}}
+			{{/if}}
 
 		</div> {{!-- end content-main --}}
 	</div> {{!-- end wrapper --}}

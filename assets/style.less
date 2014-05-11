@@ -1,10 +1,114 @@
 @import 'normalize.less';
 @import 'preboot.less';
 
+#gradient > .radial(#333, #000);
+
+@body-background: #FDFDFD;
+@body-background: #fff;
+@font-size-base: 17px;
+
+
+body {
+    font-size: @font-size-base;
+    background-color: @body-background;
+    padding: 15px; //because of .row's negative margins. maybe I'm using row wrong?
+    // transition: all 0.5s;
+    h1 {
+    	font-variant: small-caps;
+    	font-size: 3em;
+    }
+    a {
+    	text-decoration: none;
+    	color: black;
+    }
+}
+
+html {
+	height: 100%;
+}
+
+body.showing_image {
+	background-size: cover;
+	float: left;
+	display: block;
+	background-position: center;
+	width: 100%;
+	height: 100%;
+	// background-size: contain;
+	// background-repeat: no-repeat;
+}
+
 .wrapper {
   .make-row();
 }
 .content-main, #nav {
   .make-column(8);
   .make-column-offset(2);
+}
+
+#nav {
+	a {
+		display: inline-block;
+		font-family: @font-family-sans-serif;
+		letter-spacing: 1px;
+		padding: 20px;
+		text-transform: uppercase;
+		font-size: @font-size-large;
+		// text-transform: capitalize;
+		&:first-child {
+			margin-left: -20px;
+
+		}
+		&:hover {
+			background-color: @black-10;
+		}
+	} // end a
+}
+
+.content-main {
+	a {
+		color: @brand-primary;
+		// background-color: darken(@body-background, 8%);
+		// text-decoration: underline;
+	}
+}
+
+.big_image
+{
+	width: 100%;
+}
+
+a.thumb_image 
+{	
+	width: 24%;
+	height: 300px;
+	margin: 1% 0.5%;
+	background-size: cover;
+	float: left;
+	display: block;
+	background-position: center;
+	// background-size: contain;
+	// background-repeat: no-repeat;
+}
+
+
+@media screen and (min-width: 820px) {
+	body {
+
+	}
+}
+
+
+
+// wj home specific
+
+img#wj {
+	// border: 1px solid black;
+	width: 550px;
+	margin: 20px auto;
+	display: block;
+}
+
+h2, h3, h4 {
+	text-align: center;
 }
