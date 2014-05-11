@@ -29,6 +29,8 @@
     "gulp-ssg": "~0.4.4",
     "underscore.string": "~2.3.3",
     "gulp-exec": "~2.0.0",
-    "gulp-awspublish": "0.0.14"
+    "gulp-awspublish": "0.0.14",
+    "aws-sdk": "~2.0.0-rc.15",
+    "lodash": "~2.4.1"
   }
 }
