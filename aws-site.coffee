@@ -7,8 +7,8 @@ opts =
   accessKeyId: config.aws.key
   secretAccessKey: config.aws.secret
   bucket: config.aws.bucket
-  # access:'public-read'
 
+dns = require './aws-domain'
 
 AWS.config.update opts
 
@@ -29,39 +29,36 @@ policy = {
   }]
 }
 
-
 s3_client.putBucketPolicy  {Policy : JSON.stringify policy}, (err, d)->
   console.log d
   console.log err if err
 
-s3_client.createBucket (err, something)->
+s3_client.createBucket (err)->
   console.log err if err
-  console.log something
   console.log 'Bucket created'
 
-  s3_client.putObject data, (err, d) ->
-    console.log err if err 
-    console.log d
-    console.log 'obj uploaded'
-
+  # s3_client.putObject data, (err, d) ->
+  #   console.log err if err 
+  #   console.log 'obj uploaded'
 
 s3_client.getBucketWebsite {Bucket: config.aws.bucket}, (err) ->
-  if err and err.name is "NoSuchWebsiteConfiguration"
-    
-    #opts.enableWeb can be the params for WebsiteRedirectLocation.
-    #Otherwise, just set the index.html as default suffix
-    console.log "Enabling website configuration on " + opts.Bucket + "..."
-    webOptions = (if _.isObject(opts.enableWeb) then opts.enableWeb else IndexDocument:
-      Suffix: "index.html"
-    )
-    # return callback()  if opts.dryRun
+    console.log "Enabling website configuration on " + opts.bucket + "..."
+    webOptions = {IndexDocument:Suffix: "index.html"}
     s3_client.putBucketWebsite
       Bucket: opts.bucket
       WebsiteConfiguration: webOptions
-    , (e)-> console.log e
-  else
-    console.log err
+    , (e,d)-> console.log 'x'; console.log  e, d, '---', s3_client
+  # else
+    # console.log 'getBucketWebsite err:'
+    # console.log err
 
+# works!, not concurrently though?
+# domain
+# route53 = new AWS.Route53()
+# dns_options =
+#   route53: route53
+#   domain: 'coool.net'
+# dns.create dns_options, (e, z)-> console.log e; console.log z
 
 
 

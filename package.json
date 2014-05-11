@@ -31,6 +31,8 @@
     "gulp-exec": "~2.0.0",
     "gulp-awspublish": "0.0.14",
     "aws-sdk": "~2.0.0-rc.15",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "async": "~0.8.0",
+    "uuid": "~1.4.1"
   }
 }
