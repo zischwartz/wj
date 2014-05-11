@@ -111,25 +111,15 @@ gulp.task "serve", ->
     ecstatic({ root: __dirname + '/public'  })
   ).listen(8888)
 
-# Todo put these in a separate file
-# publisher = awspublish.create({ key: '...',  secret: '...', bucket: '...' })
 publisher = awspublish.create(config.aws)
-publisher = awspublish.create
-  key: "your_key"
-  secret: "your_secret_key"
-  bucket: 'your_bucket'
 
 gulp.task "publish", ->
   gulp.src('public/**/**')
   .pipe(publisher.publish())
   .pipe(awspublish.reporter())
 
-gulp.task 'default', ['html', 'serve', 'less', 'coffee', 'listen', 'template']
+gulp.task 'default', ['html', 'serve', 'less', 'coffee', 'listen', 'template', 'image_resize']
 
-# gulp.task 'images', ->
-#   gulp.src(image_globs)
-#     .pipe(through(process_img))
-#     .pipe(gulp.dest("output/"))
 #     .pipe(exec('sips  <%= file.path %> --resampleWidth 280 --out <%= options.label_size(file.path, "-small") %>', {label_size: label_size, silent:true}))
 #     # .pipe(exec('sips  <%= file.path %> --resampleHeight 200 --out <%= options.label_size(file.path, "-small") %>', {label_size: label_size, silent:true}))
 #     # .pipe(exec('sips  <%= file.path %> -z 230 280 --out <%= options.label_size(file.path, "-small") %>', {label_size: label_size, silent:true}))
