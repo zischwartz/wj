@@ -53,8 +53,8 @@ module.exports =
           for f in @page.section.files
             if not f.meta.isHtml
               res+= context.fn f
-          console.log 'res'
-          console.log res
+          # console.log 'res'
+          # console.log res
           res
           # if @meta.isHtml and not @meta.isIndex
             # return context.fn(this)

@@ -23,6 +23,10 @@ awspublish = require 'gulp-awspublish'
 wj_helpers = require "./wj-helpers"
 handlebars = wj_helpers.registerHbs handlebars  # registers our helpers
 
+config = require './config'
+# options  = fs.readFileSync('config.coffee'))
+
+
 site =
   title: 'My Site'
   baseUrl: '/'
@@ -107,7 +111,9 @@ gulp.task "serve", ->
     ecstatic({ root: __dirname + '/public'  })
   ).listen(8888)
 
-publisher = awspublish.create({ key: '...',  secret: '...', bucket: '...' })
+# Todo put these in a separate file
+# publisher = awspublish.create({ key: '...',  secret: '...', bucket: '...' })
+publisher = awspublish.create(config.aws)
 publisher = awspublish.create
   key: "your_key"
   secret: "your_secret_key"
@@ -119,9 +125,6 @@ gulp.task "publish", ->
   .pipe(awspublish.reporter())
 
 gulp.task 'default', ['html', 'serve', 'less', 'coffee', 'listen', 'template']
-# gulp.task 'default', ['serve', 'less', 'listen', 'generate']
-
-# ### HBS Helpers
 
 # gulp.task 'images', ->
 #   gulp.src(image_globs)
@@ -130,7 +133,5 @@ gulp.task 'default', ['html', 'serve', 'less', 'coffee', 'listen', 'template']
 #     .pipe(exec('sips  <%= file.path %> --resampleWidth 280 --out <%= options.label_size(file.path, "-small") %>', {label_size: label_size, silent:true}))
 #     # .pipe(exec('sips  <%= file.path %> --resampleHeight 200 --out <%= options.label_size(file.path, "-small") %>', {label_size: label_size, silent:true}))
 #     # .pipe(exec('sips  <%= file.path %> -z 230 280 --out <%= options.label_size(file.path, "-small") %>', {label_size: label_size, silent:true}))
-# ### Images
-# process_img = (file, cb = false) ->
-#   Cache.set_img file.relative, file.relative
-#   this.queue(file) if this.queue # if we're using it as a gulp task through `through`
+
+
