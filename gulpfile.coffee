@@ -114,10 +114,6 @@ gulp.task "serve", ->
 # Todo put these in a separate file
 # publisher = awspublish.create({ key: '...',  secret: '...', bucket: '...' })
 publisher = awspublish.create(config.aws)
-publisher = awspublish.create
-  key: "your_key"
-  secret: "your_secret_key"
-  bucket: 'your_bucket'
 
 gulp.task "publish", ->
   gulp.src('public/**/**')

@@ -10,7 +10,7 @@
 	 	<div class='wrapper'>
 		 	<div id='nav'>
 		 		{{!-- Sections --}}
-				<a href="{{site.baseUrl}}">Home</a>
+				<!-- <a href="{{site.baseUrl}}">Home</a> -->
 				{{#each site.index.sections}}
 				<a href="{{url}}"> {{replaceUnderscores name}}</a>
 				{{/each}}
@@ -37,9 +37,9 @@
 
 		{{/imagesInSect}}
 
-{{!-- 		{{#imagesInSect}}
+ 		{{#imagesInSect}}
 			<img src="{{../../site.baseUrl}}{{relative}}" title="{{meta.name}}" id="{{slugify meta.name}}" alt="{{meta.name}}" class="big_image">
-		{{/imagesInSect}} --}}
+		{{/imagesInSect}}
 
 	{{/if}}
 
