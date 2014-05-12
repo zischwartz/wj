@@ -30,6 +30,7 @@ config = require './config'
 site =
   title: 'My Site'
   baseUrl: '/'
+  # baseUrl: '/'
 
 # gulp.src(['./**/*.js','!./node_modules/**','!./libs/**']) # e.g. 
 image_glob = ["content/**/**.jpg","content/**/**.png", "content/**/**.gif", "content/**/**.jpeg"]
