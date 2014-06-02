@@ -7,6 +7,10 @@ async = require("async")
 # _ = require("underscore")
 uuid = require("uuid")
 # CALLER_REFERENCE = "caisson"
+
+# Based on https://github.com/christophercliff/caisson
+# -------------------------------------------------------------
+
 HOSTED_ZONE_ID_RE = /^\/hostedzone\//
 S3_HOSTED_ZONE_IDS =
   # Listed here: http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region
