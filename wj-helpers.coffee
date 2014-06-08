@@ -59,7 +59,7 @@ module.exports =
           # if @meta.isHtml and not @meta.isIndex
             # return context.fn(this)
 
-        # and finally return
+        # Important: finally, return hbs
         handlebars
 
 

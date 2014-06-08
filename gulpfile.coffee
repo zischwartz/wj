@@ -24,7 +24,6 @@ wj_helpers = require "./wj-helpers"
 handlebars = wj_helpers.registerHbs handlebars  # registers our helpers
 
 config = require './config'
-# options  = fs.readFileSync('config.coffee'))
 
 
 site =
@@ -39,7 +38,7 @@ md_glob = ["content/**/*.md"]
 
 image_extnames = ('.'+s.split('.')[-1..] for s in image_glob)
 
-# Initial load of templates, get reloaded when one is edited
+# Initial load of templates, get reloaded when edited
 templates = {}
 templates['base']  = handlebars.compile String(fs.readFileSync('templates/base.html'))
 
@@ -73,23 +72,14 @@ gulp.task "generate", ->
     .pipe(md_filter.restore())
     .pipe(ssg(site, {property: "meta", prettyUrls: '.md'}))
     .pipe(es.map((file, cb) ->
-      # console.log file.meta.name
-      # console.log file.meta.sectionUrl
       if path.extname(file.path) not in image_extnames
-        # console.log file.meta.name
-        # console.log file.meta.section.name
-        # console.log ( f.meta.name  for f in file.meta.section.files)
-        # captions = file.meta?captions 
         html = templates['base'] # render
           page: file.meta
           site: site
           base: site.baseUrl
           content: String(file.contents)
-          # console.log site.index.sections
-          # console.log '----------------------------------------------------'
         file.contents = new Buffer(html)
       cb null, file
-
     ))
     .pipe(gulp.dest("public/")).pipe(livereload(lr_server))
 
@@ -104,7 +94,6 @@ gulp.task "coffee", ->
 gulp.task "image_resize", ->
     gulp.src(image_glob)
         .pipe(gulp.dest("public/"))
-        # .pipe(exec('sips  <%= file.path %> --resampleHeight 200 --out <%= options.label_size(file.path, "-small") %>', {label_size: wj_helpers.label_size, silent:true}))
         .pipe(exec('sips  <%= file.path %> --resampleWidth 300 --out <%= options.label_size(file.path, "-small") %>', {label_size: wj_helpers.label_size, silent:true}))
 
 gulp.task "serve", ->
@@ -120,6 +109,13 @@ gulp.task "publish", ->
   .pipe(awspublish.reporter())
 
 gulp.task 'default', ['html', 'serve', 'less', 'coffee', 'listen', 'template', 'image_resize']
+
+
+# Useful logging within the es.map() above
+# console.log file.meta.name, file.meta.sectionUrl, file.path
+# console.log file.meta.name, file.meta.section.name
+# console.log ( f.meta.name  for f in file.meta.section.files)
+# captions = file.meta?captions 
 
 #     .pipe(exec('sips  <%= file.path %> --resampleWidth 280 --out <%= options.label_size(file.path, "-small") %>', {label_size: label_size, silent:true}))
 #     # .pipe(exec('sips  <%= file.path %> --resampleHeight 200 --out <%= options.label_size(file.path, "-small") %>', {label_size: label_size, silent:true}))
