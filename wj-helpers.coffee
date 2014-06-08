@@ -23,6 +23,7 @@ module.exports =
           if @meta.isHtml and not @meta.isIndex
             return context.fn(this)
 
+        # this is all just for debugging
         domain = require('domain')
         d = domain.create()
         d.on 'error', (err)->
@@ -40,6 +41,7 @@ module.exports =
                     out[key][i] = [j]
             return JSON.stringify(out)
 
+
         handlebars.registerHelper "slugify", (str) ->
             new handlebars.SafeString(_str.slugify(str))
         
@@ -49,9 +51,12 @@ module.exports =
         handlebars.registerHelper "imagesInSect", (context, options) ->
           # console.log this
           res = ''
+          # console.log @page.captions
           if @page.hide_image_index then return res
           for f in @page.section.files
             if not f.meta.isHtml
+              caption = @page.captions[f.meta.name]
+              if caption then f.meta.caption = caption
               res+= context.fn f
           # console.log 'res'
           # console.log res

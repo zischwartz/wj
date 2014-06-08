@@ -21,17 +21,23 @@
 	  <div class='content-main'>
 			<h1>{{page.title}}</h1>
 			{{{content}}}
+			{{!-- {{json page.captions}} --}}
 
  	{{#if page.isIndex}}
 		{{#each page.section.files}}
 			{{#ifPage}}
-				<a href='{{meta.url}}'>{{default meta.title meta.name}}</a><br>
+			{{!-- TODO --}}
+			{{!-- replaceUnderscores (how do you stack helpers?)--}}
+			{{!-- make image a partial (how do partials work, stupid plane) --}}
+				<a href='{{meta.url}}'>{{default meta.title meta.name}}
+					{{#if meta.media}} {{meta.media}} {{/if}}
+				</a><br>
 			{{/ifPage}}
 		{{/each}}
 
 		{{#imagesInSect}}
-			{{!-- <a href='{{../../site.baseUrl}}{{relative}}' class='thumb_image' style="background-image: url('{{../../site.baseUrl}}{{label_size relative '-small'}}')"></a> --}}
-			<img src="{{../../site.baseUrl}}{{label_size relative '-small'}}" title="{{meta.name}}" id="{{slugify meta.name}}" alt="{{meta.name}}" class="thumb_image">
+			{{!-- <a href='{{../../site.baseUrl}}{{relative}}' class='thumb_image' title="{{meta.caption}}"  style="background-image: url('{{../../site.baseUrl}}{{label_size relative '-small'}}')"></a> --}}
+			<img src="{{../../site.baseUrl}}{{label_size relative '-small'}}" title="{{meta.caption}}" id="{{slugify meta.name}}" alt="{{meta.caption}}" class="thumb_image">
 		{{/imagesInSect}}
 	{{/if}}
 
