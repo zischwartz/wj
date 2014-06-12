@@ -7,12 +7,13 @@
 		<link rel="stylesheet" href="/style.css">
 	</head>
 	<body>
+
 	 	<div class='wrapper'>
 		 	<div id='nav'>
 		 		{{!-- Sections --}}
 				<a href="{{site.baseUrl}}">Home</a>
 				{{#each site.index.sections}}
-				<a href="{{url}}"> {{replaceUnderscores name}}</a>
+				<a href="{{url}}"> {{defaultNoUnderscores name title}}</a>
 				{{/each}}
 		 	</div> {{!-- /#nav --}}
 	 	</div> {{!-- /.wrapper --}}
@@ -20,18 +21,12 @@
  	<div class='wrapper'>
 	  <div class='content-main'>
 			<h1>{{page.title}}</h1>
-			{{{content}}}
-			{{!-- {{json page.captions}} --}}
-
+			{{{content}}} {{!-- {{json page.captions}} --}}
+ 	
  	{{#if page.isIndex}}
 		{{#each page.section.files}}
 			{{#ifPage}}
-			{{!-- TODO --}}
-			{{!-- replaceUnderscores (how do you stack helpers?)--}}
-			{{!-- make image a partial (how do partials work, stupid plane) --}}
-				<a href='{{meta.url}}'>{{default meta.title meta.name}}
-					{{#if meta.media}} {{meta.media}} {{/if}}
-				</a><br>
+				{{> pageLinkImage }} 
 			{{/ifPage}}
 		{{/each}}
 

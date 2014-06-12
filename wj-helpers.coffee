@@ -8,12 +8,17 @@ label_size = (path, size) ->
   tokens.push(ext)
   tokens.join('.')
 
+
 module.exports =
     label_size: label_size
 
     registerHbs: (handlebars)->
         handlebars.registerHelper 'replaceUnderscores', (s) ->
           s.replace(/_/g,' ')
+
+        handlebars.registerHelper 'defaultNoUnderscores', (data, options) ->
+          if data then return data.replace(/_/g,' ')
+          else return options.replace(/_/g,' ')
 
         handlebars.registerHelper "default", (data, options) ->
           if data then return data
@@ -22,6 +27,9 @@ module.exports =
         handlebars.registerHelper "ifPage", (context, options) ->
           if @meta.isHtml and not @meta.isIndex
             return context.fn(this)
+        
+        handlebars.registerPartial 'pageLinkImage', 
+        '<br><a href="{{meta.url}}">{{defaultNoUnderscores meta.title meta.name}}{{#if meta.media}} {{meta.media}} {{/if}}</a>'
 
         # this is all just for debugging
         domain = require('domain')
