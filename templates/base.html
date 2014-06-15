@@ -1,49 +1,45 @@
 <!DOCTYPE html>
 <html class="no-js">
-    <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <title>{{site.title}} - {{page.title}}</title>
-		<link rel="stylesheet" href="/style.css">
-	</head>
-	<body>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{site.title}} - {{page.title}}</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <div class='wrapper'>
+      <div id='nav'>
+        <a href="{{site.baseUrl}}">Home</a>
+        {{#each site.index.sections}}
+          <a href="{{url}}"> {{defaultNoUnderscores name title}}</a>
+        {{/each}}
+      </div> {{!-- /#nav --}}
+    </div> {{!-- /.wrapper --}}
+    <div class='wrapper'>
+      <div class='content-main'>
+      
+      <h1>{{page.title}}</h1>
+      {{{content}}}
+    
+    	{{!-- If this is an index.md, list all the other .md's in the dir --}}
+	    {{#if page.isIndex}}
+	      {{#each page.section.files}}
+	        {{> pageLink }} 
+	      {{/each}}
+	      {{!-- and show the images in the dir --}}
+	      {{#imagesInSect}}
+	        {{> imageThumbA this}}
+	        {{!-- {{> imageThumbI this}} --}}
+	      {{/imagesInSect}}
+	    {{/if}}
 
-	 	<div class='wrapper'>
-		 	<div id='nav'>
-		 		{{!-- Sections --}}
-				<a href="{{site.baseUrl}}">Home</a>
-				{{#each site.index.sections}}
-				<a href="{{url}}"> {{defaultNoUnderscores name title}}</a>
-				{{/each}}
-		 	</div> {{!-- /#nav --}}
-	 	</div> {{!-- /.wrapper --}}
+    </div> {{!-- end content-main --}}
+  </div> {{!-- end wrapper --}}
+  {{!-- For Debuging --}} 
+  {{!-- {{json page}} --}}
 
- 	<div class='wrapper'>
-	  <div class='content-main'>
-			<h1>{{page.title}}</h1>
-			{{{content}}} {{!-- {{json page.captions}} --}}
- 	
- 	{{#if page.isIndex}}
-		{{#each page.section.files}}
-			{{#ifPage}}
-				{{> pageLinkImage }} 
-			{{/ifPage}}
-		{{/each}}
-
-		{{#imagesInSect}}
-			{{!-- <a href='{{../../site.baseUrl}}{{relative}}' class='thumb_image' title="{{meta.caption}}"  style="background-image: url('{{../../site.baseUrl}}{{label_size relative '-small'}}')"></a> --}}
-			<img src="{{../../site.baseUrl}}{{label_size relative '-small'}}" title="{{meta.caption}}" id="{{slugify meta.name}}" alt="{{meta.caption}}" class="thumb_image">
-		{{/imagesInSect}}
-	{{/if}}
-
-		</div> {{!-- end content-main --}}
-	</div> {{!-- end wrapper --}}
-	
-	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-	<script src='/script.js'></script>
-
-	<script>document.write('<script src="http://'+ location.host.split(':')[0] + ':35729/livereload.js"></' + 'script>')</script>
-
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src='/script.js'></script>
+  <script>document.write('<script src="http://'+ location.host.split(':')[0] + ':35729/livereload.js"></' + 'script>')</script>
   </body>
-
 </html>

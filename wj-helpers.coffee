@@ -28,10 +28,34 @@ module.exports =
           if @meta.isHtml and not @meta.isIndex
             return context.fn(this)
         
-        handlebars.registerPartial 'pageLinkImage', 
-        '<br><a href="{{meta.url}}">{{defaultNoUnderscores meta.title meta.name}}{{#if meta.media}} {{meta.media}} {{/if}}</a>'
+        handlebars.registerPartial 'pageLink',
+        '{{#ifPage}}<br>
+            <a href="{{meta.url}}">
+            {{defaultNoUnderscores meta.title meta.name}}
+            {{#if meta.media}} <img src="{{meta.media}}" /> {{/if}}
+            </a>
+         {{/ifPage}}'
 
-        # this is all just for debugging
+        handlebars.registerPartial 'sectionLink', 
+        '''{{#each site.index.sections}}
+              <a href="{{url}}"> {{defaultNoUnderscores name title}}</a>
+           {{/each}}'''
+
+        # XXX imageThumbA and imageThumbI should be the below, without the added slash at the start of the urls, handlebars is removing it evidently? https://github.com/wycats/handlebars.js/issues/268
+        # <a href="{{../../site.baseUrl}}{{relative}}" class="thumb_image" title="{{meta.caption}}"  style="background-image: url('{{../../site.baseUrl}}{{label_size relative "-small"}}')"></a>
+        # <a href="/{{../../site.baseUrl}}{{relative}}" class="thumb_image" title="{{meta.caption}}"  style="background-image: url('/{{../../site.baseUrl}}{{label_size relative "-small"}}')"></a>
+
+        handlebars.registerPartial 'imageThumbA', 
+        '''
+        <a href="/{{../../site.baseUrl}}{{relative}}" class="thumb_image" title="{{meta.caption}}"  style="background-image: url('/{{../../site.baseUrl}}{{label_size relative "-small"}}')"></a>
+        '''
+
+        handlebars.registerPartial 'imageThumbI',
+        '''
+        <img src="/{{../../site.baseUrl}}{{label_size relative '-small'}}" title="{{meta.caption}}" id="{{slugify meta.name}}" alt="{{meta.caption}}" class="thumb_image">
+        '''
+
+        # d is all just for debugging
         domain = require('domain')
         d = domain.create()
         d.on 'error', (err)->

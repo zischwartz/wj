@@ -1,6 +1,6 @@
 ---
 stuff: Another page....
-media: wj.jpg
+media: wj-small.jpg
 ---
 Other Page
 

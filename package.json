@@ -26,13 +26,14 @@
     "gulp-livereload": "~1.2.0",
     "gulp-util": "~2.2.14",
     "gulp-filter": "~0.4.0",
-    "gulp-ssg": "~0.4.4",
+    "gulp-ssg": "https://github.com/zischwartz/gulp-ssg/tarball/f7747c28d877a8e0161ead16e1b98525e00e635c",
     "underscore.string": "~2.3.3",
     "gulp-exec": "~2.0.0",
     "gulp-awspublish": "0.0.14",
     "aws-sdk": "~2.0.0-rc.15",
     "lodash": "~2.4.1",
     "async": "~0.8.0",
-    "uuid": "~1.4.1"
+    "uuid": "~1.4.1",
+    "gulp-continuous-concat": "~0.1.1"
   }
 }
