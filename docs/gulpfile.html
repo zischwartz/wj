@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>gulpfile.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>gulpfile.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>Normal nodejs module loading of stuff we’ll need</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>path = <span class="hljs-built_in">require</span> <span class="hljs-string">'path'</span>
+fs = <span class="hljs-built_in">require</span> <span class="hljs-string">'fs'</span>
+http = <span class="hljs-built_in">require</span> <span class="hljs-string">'http'</span>
+es = <span class="hljs-built_in">require</span> <span class="hljs-string">'event-stream'</span>
+gulp = <span class="hljs-built_in">require</span> <span class="hljs-string">'gulp'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Our development server</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>ecstatic = <span class="hljs-built_in">require</span> <span class="hljs-string">'ecstatic'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Not the standard version of <code>gulp-ssg</code>. See <a href="https://github.com/zischwartz/gulp-ssg">github</a> &amp; <a href="https://github.com/paulwib/gulp-ssg/pull/2">PR</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>site_generator = <span class="hljs-built_in">require</span> <span class="hljs-string">'gulp-ssg'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h2 id="setup">Setup</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p><code>gulp-load-plugins</code> loads all the modules in your <code>package.json</code> that begin with ‘gulp-
+Converting  dashes to camelcase, e.g. ‘gulp-front-matter’ becomes <code>plugins.frontMatter</code>
+Link here about npm</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>gulpLoadPlugins = <span class="hljs-built_in">require</span> <span class="hljs-string">'gulp-load-plugins'</span>
+plugins = gulpLoadPlugins()
+
+handlebars = <span class="hljs-built_in">require</span> <span class="hljs-string">'handlebars'</span>
+wj_helpers = <span class="hljs-built_in">require</span> <span class="hljs-string">"./wj-helpers"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Registers our handlebar helpers and partials from <code>wj-helpers.coffee</code>, for use in the templates (<code>.html</code> files). <a href="http://handlebarsjs.com/">More info about handlebars</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>handlebars = wj_helpers.registerHbs handlebars
+
+<span class="hljs-keyword">try</span>
+  config = <span class="hljs-built_in">require</span> <span class="hljs-string">'./config'</span>
+<span class="hljs-keyword">catch</span> err
+  plugins.util.log plugins.util.colors.bgRed <span class="hljs-string">'No config.coffee found'</span>
+  plugins.util.log plugins.util.colors.red <span class="hljs-string">'You won\'t be able to upload to s3. '</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Our livereload server</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>lr = <span class="hljs-built_in">require</span> <span class="hljs-string">"tiny-lr"</span>
+lr_server = lr()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Configuration for the site generator.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>If your site will be at the root (<a href="http://something.com">http://something.com</a>), you can leave it as <code>/</code>. If not (<a href="http://something.com/your_site/">http://something.com/your_site/</a>), set it to the path (<code>/yoursite/</code>)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>site =
+  <span class="hljs-attribute">title</span>: <span class="hljs-string">'My Site'</span>
+  <span class="hljs-attribute">baseUrl</span>: <span class="hljs-string">'/'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Globs are a bit confusing. Strings, or arrays of strings, that specify what files match (and in this case, what files gulp should read and use)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>image_glob = [<span class="hljs-string">"./content/**/**.jpg"</span>,<span class="hljs-string">"./content/**/**.png"</span>, <span class="hljs-string">"./content/**/**.gif"</span>, <span class="hljs-string">"./content/**/**.jpeg"</span>]
+content_glob = [<span class="hljs-string">"./content/**/*.md"</span>, <span class="hljs-string">"./content/**/**.jpg"</span>,<span class="hljs-string">"./content/**/**.png"</span>, <span class="hljs-string">"./content/**/**.gif"</span>, <span class="hljs-string">"./content/**/**.jpeg"</span>]
+md_glob = [<span class="hljs-string">"./content/**/*.md"</span>]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Example of a complex glob from the gulp docs</p>
+<pre><code>gulp.src([<span class="hljs-string">'./**/*.js'</span>,<span class="hljs-string">'!./node_modules/**'</span>,<span class="hljs-string">'!./libs/**'</span>])
+</code></pre>
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Grab the image file extensions we care about (<code>png</code>)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>image_extnames = (<span class="hljs-string">'.'</span>+s.split(<span class="hljs-string">'.'</span>)[-<span class="hljs-number">1.</span>.] <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> image_glob)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Initial load of templates, get reloaded when edited
+Add more templates here, like this. And below.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>templates = {}
+templates[<span class="hljs-string">'base'</span>]  = handlebars.compile String(fs.readFileSync(<span class="hljs-string">'templates/base.html'</span>))</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <h2 id="tasks">Tasks</h2>
+<p>Gulp tasks are functions that you name, and can be run from the command line</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Start up the livereload server</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>gulp.task <span class="hljs-string">"listen"</span>, <span class="hljs-function"><span class="hljs-params">(next)</span> -&gt;</span>
+  plugins.util.log <span class="hljs-string">'livereload listening...'</span>
+  lr_server.listen <span class="hljs-number">35729</span>, <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">console</span>.error(err) <span class="hljs-keyword">if</span> err
+    next()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Watch our templates files for changes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>gulp.task <span class="hljs-string">"template"</span>,<span class="hljs-function"> -&gt;</span>
+  plugins.watch {<span class="hljs-attribute">glob</span>: [<span class="hljs-string">'templates/*.html'</span>, <span class="hljs-string">'templates/*.hbs'</span>], <span class="hljs-attribute">name</span>:<span class="hljs-string">'template watch~'</span>},<span class="hljs-function"> -&gt;</span> <span class="hljs-comment"># verbose:true,</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>update the base template</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    templates[<span class="hljs-string">'base'</span>]  = handlebars.compile String(fs.readFileSync(<span class="hljs-string">'templates/base.html'</span>))</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>and rebuild the site</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    gulp.start <span class="hljs-string">"generate"</span>
+
+gulp.task <span class="hljs-string">"html"</span>,<span class="hljs-function"> -&gt;</span>
+  plugins.watch {<span class="hljs-attribute">glob</span>: md_glob, <span class="hljs-attribute">name</span>:<span class="hljs-string">'md watch~'</span>},<span class="hljs-function"> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>build the site</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    gulp.start <span class="hljs-string">"generate"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <h2 id="the-generate-task">The Generate Task</h2>
+<p>The big one. Take in content (<code>md</code> files and images), index, and output the site</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p><code>gulp-filter</code> keeps things simple, by allowing us to temporarily filter some files out of the stream</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+gulp.task <span class="hljs-string">"generate"</span>,<span class="hljs-function"> -&gt;</span>
+    md_filter = plugins.filter(<span class="hljs-string">"**/**.md"</span>)
+    gulp.src(content_glob)
+    .pipe(md_filter)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Grab that YAML frontmatter from our posts</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    .pipe(plugins.frontMatter(<span class="hljs-attribute">property</span>: <span class="hljs-string">"meta"</span>))
+    .pipe(plugins.marked())
+    .pipe<span class="hljs-function"><span class="hljs-params">(es.map((file, cb) -&gt;
+</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>hacky, but useful in templates later</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      file.meta.isHtml = <span class="hljs-literal">true</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>give it back to the gulp file stream</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      cb <span class="hljs-literal">null</span>, file
+      ))</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>use the filter’s <code>restore()</code> method to restore the images our stream of files</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    .pipe(md_filter.restore())</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>Index our nascent site</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    .pipe(site_generator(site, {<span class="hljs-attribute">property</span>: <span class="hljs-string">"meta"</span>, <span class="hljs-attribute">prettyUrls</span>: <span class="hljs-string">'.md'</span>}))</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>Take our markdown files and metadata (YAML, other files in the same directory), and mashes it into our template</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    .pipe<span class="hljs-function"><span class="hljs-params">(es.map((file, cb) -&gt;
+      <span class="hljs-keyword">if</span> path.extname(file.path) <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> image_extnames
+</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>render, calls template(options)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        html = templates[<span class="hljs-string">'base'</span>]
+          <span class="hljs-attribute">page</span>: file.meta
+          <span class="hljs-attribute">site</span>: site
+          <span class="hljs-attribute">base</span>: site.baseUrl
+          <span class="hljs-attribute">content</span>: String(file.contents)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>put it in a buffer, because that’s the way files work</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        file.contents = <span class="hljs-keyword">new</span> Buffer(html)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>give it back to the gulp file stream</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      cb <span class="hljs-literal">null</span>, file
+    ))</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>actually write out the files, and reload the browser</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    .pipe(gulp.dest(<span class="hljs-string">"public/"</span>)).pipe(plugins.livereload(lr_server))
+
+
+gulp.task <span class="hljs-string">"less"</span>,<span class="hljs-function"> -&gt;</span>
+  gulp.src(<span class="hljs-string">"assets/*.less"</span>).pipe(plugins.watch()) <span class="hljs-comment"># careful not to include the less subdir, use @import for those</span>
+  .pipe(plugins.less()).pipe(plugins.continuousConcat(<span class="hljs-string">'style.css'</span>))
+  .pipe(gulp.dest(<span class="hljs-string">"public/"</span>)).pipe(plugins.livereload(lr_server))
+
+gulp.task <span class="hljs-string">"coffee"</span>,<span class="hljs-function"> -&gt;</span>
+  coffee_filter = plugins.filter(<span class="hljs-string">"*.coffee"</span>)
+  gulp.src([<span class="hljs-string">"assets/**.coffee"</span>, <span class="hljs-string">"assets/**.js"</span>]).pipe(plugins.watch())
+  .pipe(coffee_filter).pipe(plugins.coffee({<span class="hljs-attribute">bare</span>: <span class="hljs-literal">true</span>}).<span class="hljs-literal">on</span>(<span class="hljs-string">'error'</span>, plugins.util.log)).pipe(coffee_filter.restore())
+  .pipe(plugins.continuousConcat(<span class="hljs-string">'script.js'</span>)).pipe(gulp.dest(<span class="hljs-string">"./public/"</span>)).pipe(plugins.livereload(lr_server))
+
+gulp.task <span class="hljs-string">"image_resize"</span>,<span class="hljs-function"> -&gt;</span>
+    gulp.src(image_glob)
+        .pipe(gulp.dest(<span class="hljs-string">"public/"</span>))
+        .pipe(plugins.exec(<span class="hljs-string">'sips  &lt;%= file.path %&gt; --resampleWidth 300 --out &lt;%= options.label_size(file.path, "-small") %&gt;'</span>, {<span class="hljs-attribute">label_size</span>: wj_helpers.label_size, <span class="hljs-attribute">silent</span>:<span class="hljs-literal">true</span>}))
+
+gulp.task <span class="hljs-string">"serve"</span>,<span class="hljs-function"> -&gt;</span>
+  http.createServer(
+    ecstatic({ <span class="hljs-attribute">root</span>: __dirname + <span class="hljs-string">'/public'</span>  })
+  ).listen(<span class="hljs-number">8888</span>)
+
+gulp.task <span class="hljs-string">"publish"</span>,<span class="hljs-function"> -&gt;</span>
+  publisher = plugins.awspublish.create(config.aws) <span class="hljs-comment"># this was outside, of the task XXX test this</span>
+  gulp.src(<span class="hljs-string">'public/**/**'</span>)
+  .pipe(publisher.publish())
+  .pipe(plugins.awspublish.reporter())</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>this defines what happens when we simply run <code>gulp</code> from the command line</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>gulp.task <span class="hljs-string">'default'</span>, [<span class="hljs-string">'html'</span>, <span class="hljs-string">'serve'</span>, <span class="hljs-string">'less'</span>, <span class="hljs-string">'coffee'</span>, <span class="hljs-string">'listen'</span>, <span class="hljs-string">'template'</span>, <span class="hljs-string">'image_resize'</span>]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>Useful logging within the es.map() above</p>
+<pre><code><span class="hljs-built_in">console</span>.log file.meta.name, file.meta.sectionUrl, file.path
+<span class="hljs-built_in">console</span>.log file.meta.name, file.meta.section.name
+<span class="hljs-built_in">console</span>.log ( f.meta.name  <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> file.meta.section.files)
+captions = file.meta?captions
+</code></pre>
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>Alternate resize modes</p>
+<pre><code>.pipe(exec(<span class="hljs-string">'sips  &lt;%= file.path %&gt; --resampleWidth 280 --out &lt;%= options.label_size(file.path, "-small") %&gt;'</span>, {<span class="hljs-attribute">label_size</span>: label_size, <span class="hljs-attribute">silent</span>:<span class="hljs-literal">true</span>}))
+.pipe(exec(<span class="hljs-string">'sips  &lt;%= file.path %&gt; --resampleHeight 200 --out &lt;%= options.label_size(file.path, "-small") %&gt;'</span>, {<span class="hljs-attribute">label_size</span>: label_size, <span class="hljs-attribute">silent</span>:<span class="hljs-literal">true</span>}))
+.pipe(exec(<span class="hljs-string">'sips  &lt;%= file.path %&gt; -z 230 280 --out &lt;%= options.label_size(file.path, "-small") %&gt;'</span>, {<span class="hljs-attribute">label_size</span>: label_size, <span class="hljs-attribute">silent</span>:<span class="hljs-literal">true</span>}))
+</code></pre>
+            </div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -5,7 +5,7 @@ hide_image_index: true
 
 ---
 <img src='wj.jpg' id ='wj'>
-## Penis a static site generator
+## Barely a static site generator
 <br><br><br>
 ### A simple script which takes
 ### images and text,
