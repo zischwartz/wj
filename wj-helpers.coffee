@@ -27,7 +27,7 @@ module.exports =
         handlebars.registerHelper "ifPage", (context, options) ->
           if @meta.isHtml and not @meta.isIndex
             return context.fn(this)
-        
+
         handlebars.registerPartial 'pageLink',
         '{{#ifPage}}<br>
             <a href="{{meta.url}}">
@@ -36,7 +36,7 @@ module.exports =
             </a>
          {{/ifPage}}'
 
-        handlebars.registerPartial 'sectionLink', 
+        handlebars.registerPartial 'sectionLink',
         '''{{#each site.index.sections}}
               <a href="{{url}}"> {{defaultNoUnderscores name title}}</a>
            {{/each}}'''
@@ -45,7 +45,7 @@ module.exports =
         # <a href="{{../../site.baseUrl}}{{relative}}" class="thumb_image" title="{{meta.caption}}"  style="background-image: url('{{../../site.baseUrl}}{{label_size relative "-small"}}')"></a>
         # <a href="/{{../../site.baseUrl}}{{relative}}" class="thumb_image" title="{{meta.caption}}"  style="background-image: url('/{{../../site.baseUrl}}{{label_size relative "-small"}}')"></a>
 
-        handlebars.registerPartial 'imageThumbA', 
+        handlebars.registerPartial 'imageThumbA',
         '''
         <a href="/{{../../site.baseUrl}}{{relative}}" class="thumb_image" title="{{meta.caption}}"  style="background-image: url('/{{../../site.baseUrl}}{{label_size relative "-small"}}')"></a>
         '''
@@ -76,7 +76,7 @@ module.exports =
 
         handlebars.registerHelper "slugify", (str) ->
             new handlebars.SafeString(_str.slugify(str))
-        
+
         handlebars.registerHelper 'label_size', (path, size)->
           label_size(path, size)
 
@@ -84,10 +84,10 @@ module.exports =
           # console.log this
           res = ''
           # console.log @page.captions
-          if @page.hide_image_index then return res
+          if @page?.hide_image_index then return res
           for f in @page.section.files
             if not f.meta.isHtml
-              caption = @page.captions[f.meta.name]
+              caption = @?page.captions[f.meta.name]
               if caption then f.meta.caption = caption
               res+= context.fn f
           # console.log 'res'
