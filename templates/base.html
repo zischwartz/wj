@@ -9,7 +9,7 @@
   <body>
     <div class='wrapper'>
       <div id='nav'>
-        <a href="{{site.baseUrl}}">Home</a>
+        <!-- <a href="{{site.baseUrl}}">Home</a> -->
         {{#each site.index.sections}}
           <a href="{{url}}"> {{defaultNoUnderscores name title}}</a>
         {{/each}}
@@ -17,14 +17,14 @@
     </div> {{!-- /.wrapper --}}
     <div class='wrapper'>
       <div class='content-main'>
-      
+
       <h1>{{page.title}}</h1>
       {{{content}}}
-    
+
     	{{!-- If this is an index.md, list all the other .md's in the dir --}}
 	    {{#if page.isIndex}}
 	      {{#each page.section.files}}
-	        {{> pageLink }} 
+	        {{> pageLink }}
 	      {{/each}}
 	      {{!-- and show the images in the dir --}}
 	      {{#imagesInSect}}
@@ -35,7 +35,7 @@
 
     </div> {{!-- end content-main --}}
   </div> {{!-- end wrapper --}}
-  {{!-- For Debuging --}} 
+  {{!-- For Debuging --}}
   {{!-- {{json page}} --}}
 
   <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>

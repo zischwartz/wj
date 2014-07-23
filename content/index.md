@@ -1,9 +1,8 @@
 ---
-stuff: ABCDEFGH
-description: Like I said, my bloggg!
+title: hello world
+key: value
 hide_image_index: true
-
 ---
 
-<br><br><br><br><br><br><br><br><br><br><br>
+This is a blank template with, except for some styles.
 
