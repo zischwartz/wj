@@ -36,6 +36,11 @@ module.exports =
             </a>
          {{/ifPage}}'
 
+        handlebars.registerPartial 'pageLinkThumbA',
+        '''
+        {{#ifPage}}<a href="{{meta.url}}" class="thumb_image page_link_thumb_a"  style="background-image: url('{{meta.media}}')"><span>{{defaultNoUnderscores meta.title meta.name}}</span></a>{{/ifPage}}
+        '''
+
         handlebars.registerPartial 'sectionLink',
         '''{{#each site.index.sections}}
               <a href="{{url}}"> {{defaultNoUnderscores name title}}</a>
@@ -44,6 +49,8 @@ module.exports =
         # XXX imageThumbA and imageThumbI should be the below, without the added slash at the start of the urls, handlebars is removing it evidently? https://github.com/wycats/handlebars.js/issues/268
         # <a href="{{../../site.baseUrl}}{{relative}}" class="thumb_image" title="{{meta.caption}}"  style="background-image: url('{{../../site.baseUrl}}{{label_size relative "-small"}}')"></a>
         # <a href="/{{../../site.baseUrl}}{{relative}}" class="thumb_image" title="{{meta.caption}}"  style="background-image: url('/{{../../site.baseUrl}}{{label_size relative "-small"}}')"></a>
+        # same for pageLinkThumbA too? XXX ???
+
 
         handlebars.registerPartial 'imageThumbA',
         '''
@@ -62,6 +69,8 @@ module.exports =
           console.log err
         handlebars.registerHelper 'json', (obj) ->
           d.run ->
+            console.log 'hi'
+            console.log obj
             out = {}
             for key, value of obj
               out[key]= {}
@@ -84,7 +93,8 @@ module.exports =
           # console.log this
           res = ''
           # console.log @page.captions
-          if @page?.hide_image_index then return res
+          if not @page?.show_image_index
+            return res
           for f in @page.section.files
             if not f.meta.isHtml
               caption = @?page.captions[f.meta.name]

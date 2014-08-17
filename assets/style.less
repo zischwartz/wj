@@ -1,43 +1,44 @@
 @import 'less/normalize.less';
 @import 'less/preboot.less';
 
-// @body-background: #FDFDFD;
-@body-background: #fff;
-// @body-background: red;
+@body-background: #FDFDFD;
 
-@font-size-base: 17px;
+@font-size-base: 16px;
 
+@link-color: @brand-primary;
+@link-color-hover: darken(@link-color, 15%);
+ // transition: all 0.5s;
+
+html {
+  height: 100%;
+}
 
 body {
     font-size: @font-size-base;
     background-color: @body-background;
     padding: 15px; //because of .row's negative margins. maybe I'm using row wrong?
-    // transition: all 0.5s;
+    font-family: 'Noto Serif', serif;
     h1 {
-    	font-variant: small-caps;
     	font-size: 3em;
+      font-family: 'Open Sans', sans-serif;
     }
-    a {
-    	text-decoration: none;
-    	color: black;
+
+    h2 {
+      margin-top: 2em;
     }
+
+  a {
+    color: @link-color;
+    text-decoration: none;
+
+    &:hover {
+      color: @link-color-hover;
+      text-decoration: underline;
+    }
+  }
 }
 
-html {
-	height: 100%;
-}
-
-body.showing_image {
-	background-size: cover;
-	float: left;
-	display: block;
-	background-position: center;
-	width: 100%;
-	height: 100%;
-	// background-size: contain;
-	// background-repeat: no-repeat;
-}
-
+// Scaffolding
 .wrapper {
   .make-row();
 }
@@ -47,6 +48,12 @@ body.showing_image {
 }
 
 #nav {
+ border-bottom: 1px solid #D4D7DB;
+ &.bottom {
+   border-top: 1px solid #D4D7DB;
+   border-bottom: none;
+   margin-top: 200px;
+ }
 	a {
 		display: inline-block;
 		font-family: @font-family-sans-serif;
@@ -54,10 +61,10 @@ body.showing_image {
 		padding: 20px;
 		text-transform: uppercase;
 		font-size: @font-size-large;
+    text-decoration: none;
 		// text-transform: capitalize;
 		&:first-child {
 			margin-left: -20px;
-
 		}
 		&:hover {
 			background-color: @black-10;
@@ -68,29 +75,59 @@ body.showing_image {
 .content-main {
 	a {
 		color: @brand-primary;
-		// background-color: darken(@body-background, 8%);
+		// background-color: darken(@body-background, 48%);
 		// text-decoration: underline;
 	}
 }
 
-.big_image
-{
-	width: 100%;
-}
+// .big_image
+// {
+// 	width: 100%;
+// }
 
 a.thumb_image
 {
 	width: 24%;
-	height: 300px;
+  // height: 300px;
+	min-height: 200px;
 	margin: 1% 0.5%;
 	background-size: cover;
 	float: left;
 	display: block;
-	background-position: center;
+
+  background-position: center;
+
+  .cool-hover-border();
 	// background-size: contain;
 	// background-repeat: no-repeat;
 }
 
+
+a.page_link_thumb_a
+{
+  background-position: initial;
+  width: 49%;
+  // height: 400px;
+  // background-size: contain;
+  background-repeat: no-repeat;
+
+  position: relative; // so we can pos abs in the span
+
+
+  span {
+    position: absolute;
+    bottom: 0px;
+    text-align: center;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .80);
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    padding: 3px 0;
+
+  }
+
+
+}
 
 @media screen and (min-width: 820px) {
 	body {
@@ -100,15 +137,31 @@ a.thumb_image
 
 
 
-// wj home specific
 
-img#wj {
-	// border: 1px solid black;
-	width: 550px;
-	margin: 20px auto;
-	display: block;
-}
+.cool-hover-border {
+  display: inline-block;
+  //width: 100px; height: 100px;
+  border-width: 20px;
+  // padding: 40px;
+  border-color: rgba(0,0,0,0);
 
-h2, h3, h4 {
-	text-align: center;
+
+  // border-radius: 100%;
+  // -moz-border-radius: 100%;
+  // -webkit-border-radius: 100%;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  -webkit-transition: 0.5s ease;
+  // -moz-transition: 0.5s ease;
+  // -ms-transition: 0.5s ea
+
+  &:hover {
+    padding: 20px;
+    border-width: 0px;
+    border-color: rgba(0, 0, 0, 0.8);
+  }
+  border-style: dashed;
 }

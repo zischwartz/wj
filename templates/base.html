@@ -4,39 +4,56 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{{site.title}} - {{page.title}}</title>
+    <link href='http://fonts.googleapis.com/css?family=Noto+Serif|Open+Sans:600' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/style.css">
   </head>
   <body>
     <div class='wrapper'>
       <div id='nav'>
-        <!-- <a href="{{site.baseUrl}}">Home</a> -->
-        {{#each site.index.sections}}
-          <a href="{{url}}"> {{defaultNoUnderscores name title}}</a>
-        {{/each}}
+        {{#unless page.suppress_section_index}}<a href="{{site.baseUrl}}">Home</a>
+          {{#each site.index.sections}}
+            <a href="{{url}}"> {{defaultNoUnderscores name title}}</a>
+          {{/each}}
+        {{/unless}}
       </div> {{!-- /#nav --}}
     </div> {{!-- /.wrapper --}}
     <div class='wrapper'>
       <div class='content-main'>
 
       <h1>{{page.title}}</h1>
+      {{#if page.media}} <img src='../{{page.media}}'> {{/if}}
       {{{content}}}
 
+
     	{{!-- If this is an index.md, list all the other .md's in the dir --}}
-	    {{#if page.isIndex}}
+	    {{#if page.isIndex}} {{#unless page.suppress_files_index}}
 	      {{#each page.section.files}}
-	        {{> pageLink }}
+	        {{> pageLinkThumbA }}
 	      {{/each}}
-	      {{!-- and show the images in the dir --}}
+	      {{!-- and show the images in the dir, if page.show_image_index is true --}}
 	      {{#imagesInSect}}
 	        {{> imageThumbA this}}
 	        {{!-- {{> imageThumbI this}} --}}
 	      {{/imagesInSect}}
-	    {{/if}}
+	    {{/unless}} {{/if}}
 
     </div> {{!-- end content-main --}}
   </div> {{!-- end wrapper --}}
+
+{{!-- Same as above without suppress_section_index and bottom class for nav  --}}
+{{#if page.section_index_footer}}
+ <div class='wrapper'>
+      <div id='nav' class='bottom'>
+        <a href="{{site.baseUrl}}">Home</a>
+          {{#each site.index.sections}}
+            <a href="{{url}}"> {{defaultNoUnderscores name title}}</a>
+          {{/each}}
+      </div> {{!-- /#nav --}}
+    </div> {{!-- /.wrapper --}}
+ {{/if}}
+
   {{!-- For Debuging --}}
-  {{!-- {{json page}} --}}
+  {{json site.index.sections}}
 
   <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
   <script src='/script.js'></script>
