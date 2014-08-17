@@ -9,6 +9,8 @@
 @link-color-hover: darken(@link-color, 15%);
  // transition: all 0.5s;
 
+@cool-hover-border-size: 20px;
+
 html {
   height: 100%;
 }
@@ -90,7 +92,7 @@ a.thumb_image
 	width: 24%;
   // height: 300px;
 	min-height: 200px;
-	margin: 1% 0.5%;
+	// margin: 1% 0.5%;
 	background-size: cover;
 	float: left;
 	display: block;
@@ -106,23 +108,35 @@ a.thumb_image
 a.page_link_thumb_a
 {
   background-position: initial;
-  width: 49%;
+  // width: 49%; // needed when not using the cool-hover shit
+  width: 50%;
   // height: 400px;
   // background-size: contain;
   background-repeat: no-repeat;
 
   position: relative; // so we can pos abs in the span
 
+  margin-left: (0-@cool-hover-border-size);
 
   span {
     position: absolute;
-    bottom: 0px;
     text-align: center;
     width: 100%;
     background-color: rgba(0, 0, 0, .80);
     color: white;
     font-family: 'Open Sans', sans-serif;
     padding: 3px 0;
+    left: 0px;
+
+    bottom: (0-@cool-hover-border-size);
+    -webkit-transition: 0.5s ease;
+  }
+
+  &:hover span {
+    bottom: 0px;
+    left: 0px;
+    // -webkit-transition: 0.5s ease;
+
 
   }
 
@@ -141,8 +155,8 @@ a.page_link_thumb_a
 .cool-hover-border {
   display: inline-block;
   //width: 100px; height: 100px;
-  border-width: 20px;
-  // padding: 40px;
+  border-width: @cool-hover-border-size;
+
   border-color: rgba(0,0,0,0);
 
 
@@ -155,13 +169,18 @@ a.page_link_thumb_a
   box-sizing: border-box;
 
   -webkit-transition: 0.5s ease;
-  // -moz-transition: 0.5s ease;
-  // -ms-transition: 0.5s ea
+  -moz-transition: 0.5s ease;
+  -ms-transition: 0.5s ease;
 
   &:hover {
-    padding: 20px;
+    padding: @cool-hover-border-size;
     border-width: 0px;
     border-color: rgba(0, 0, 0, 0.8);
+
+    // margin-top: (@cool-hover-border-size/2);
+
   }
   border-style: dashed;
+
+
 }
