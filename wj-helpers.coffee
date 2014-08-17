@@ -38,7 +38,7 @@ module.exports =
 
         handlebars.registerPartial 'pageLinkThumbA',
         '''
-        {{#ifPage}}<a href="{{meta.url}}" class="thumb_image page_link_thumb_a"  style="background-image: url('{{meta.media}}')"><span>{{defaultNoUnderscores meta.title meta.name}}</span></a>{{/ifPage}}
+        {{#ifPage}}<a href="{{meta.url}}" class="thumb_image page_link_thumb_a"  style="background-image: url('{{label_size meta.media '-small'}}')"><span>{{defaultNoUnderscores meta.title meta.name}}</span></a>{{/ifPage}}
         '''
 
         handlebars.registerPartial 'sectionLink',

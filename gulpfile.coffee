@@ -136,7 +136,8 @@ gulp.task "coffee", ->
 gulp.task "image_resize", ->
     gulp.src(image_glob)
         .pipe(gulp.dest("public/"))
-        .pipe(plugins.exec('sips  <%= file.path %> --resampleWidth 300 --out <%= options.label_size(file.path, "-small") %>', {label_size: wj_helpers.label_size, silent:true}))
+        .pipe(plugins.exec('sips  <%= file.path %> --resampleHeight 220 --out <%= options.label_size(file.path, "-small") %>', {label_size: wj_helpers.label_size, silent:true}))
+        # .pipe(plugins.exec('sips  <%= file.path %> --resampleWidth 300 --out <%= options.label_size(file.path, "-small") %>', {label_size: wj_helpers.label_size, silent:true}))
 
 gulp.task "serve", ->
   http.createServer(
