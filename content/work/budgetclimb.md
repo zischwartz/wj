@@ -18,6 +18,8 @@ press:
 
 Created using [openframeworks](http://www.openframeworks.cc/), the [Microsoft Kinect](https://secure.wikimedia.org/wikipedia/en/wiki/Kinect) and [OpenNI](http://www.openni.org/) _Budget Climb_ is a physically interactive data environment where users can explore 26 years of federal spending - giving us a unique perspective on how our government spends our money. In order to explore the data users must exert physical effort, revealing how the budget is distributed in a novel and tangible way.
 
+
+
 Originally, a project for the 3D Sensing and Visualization class at ITP, [Fred Truman](http://fredtruman.com/) and [Frankie Cheung](http://github.com/frankiech) and I also entered it in the [datavischallenge](http://datavizchallenge.org), where we were awarded third place and a cash prize.
 
 <iframe src="http://player.vimeo.com/video/21600369?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff" frameborder="0" ></iframe>
