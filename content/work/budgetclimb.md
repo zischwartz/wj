@@ -3,7 +3,7 @@ title: Budget Climb
 key: value
 media: budgetclimb.png
 sum: A physically interactive data environment to explore 26 years of federal spending. Physical effort reveals how the budget is distributed in a novel and tangible way.
-subtitle: Climb a 3d bar chart of federal spending<br>Just like you always wanted.
+subtitle: Climb a 3d bar chart of federal spending.<br>Just like you always wanted.
 press:
  - link: http://flowingdata.com/2011/04/05/physically-climb-over-budget-data-with-kinect/
    text: Flowing Data

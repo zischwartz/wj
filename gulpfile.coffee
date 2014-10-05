@@ -40,6 +40,7 @@ lr_server = lr()
 site =
   title: 'Zach Schwartz'
   baseUrl: '/'
+  production: false
 
 # Globs are a bit confusing. Strings, or arrays of strings, that specify what files match (and in this case, what files gulp should read and use)
 image_glob = ["./content/**/**.jpg","./content/**/**.png", "./content/**/**.gif", "./content/**/**.jpeg"]
