@@ -38,7 +38,7 @@ lr_server = lr()
 
 # If your site will be at the root (http://something.com), you can leave it as `/`. If not (http://something.com/your_site/), set it to the path (`/yoursite/`)
 site =
-  title: 'My Site'
+  title: 'Zach Schwartz'
   baseUrl: '/'
 
 # Globs are a bit confusing. Strings, or arrays of strings, that specify what files match (and in this case, what files gulp should read and use)
@@ -141,7 +141,7 @@ gulp.task "image_resize", ->
 gulp.task "serve", ->
   http.createServer(
     ecstatic({ root: __dirname + '/public'  })
-  ).listen(8888)
+  ).listen(6789)
 
 gulp.task "publish", ->
   publisher = plugins.awspublish.create(config.aws) # this was outside, of the task XXX test this

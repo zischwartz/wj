@@ -4,29 +4,45 @@
 @body-background: #FDFDFD;
 
 @font-size-base: 16px;
+@line-height-base: 30px;
 
 @link-color: @brand-primary;
 @link-color-hover: darken(@link-color, 15%);
+@text-color: @black-80;
+
  // transition: all 0.5s;
 
-@cool-hover-border-size: 20px;
+// @font-family-sans-serif:  "Open Sans", Helvetica, Arial, sans-serif;
+@font-family-sans-serif:  "Lato", sans-serif;
+// @font-family-serif:       Georgia, "Times New Roman", Times, serif;
+@font-family-serif:       'Noto Serif', serif;
+// @font-family-monospace:   Monaco, Menlo, Consolas, "Courier New", monospace;
+
 
 html {
   height: 100%;
 }
 
 body {
-    font-size: @font-size-base;
+    // font-size: @font-size-base;
+    line-height: @line-height-base;
     background-color: @body-background;
     padding: 15px; //because of .row's negative margins. maybe I'm using row wrong?
-    font-family: 'Noto Serif', serif;
+    font-family: @font-family-serif;
+    color: @text-color;
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: @font-family-sans-serif;
+      font-weight: 400;
+    }
     h1 {
-    	font-size: 3em;
-      font-family: 'Open Sans', sans-serif;
+      margin-top: 1.5em;
+      margin-bottom: 1.5em;
+    	font-size: 2.5em;
     }
 
     h2 {
-      margin-top: 2em;
+      margin-top: 1.5em;
     }
 
   a {
@@ -49,6 +65,44 @@ body {
   .make-column-offset(2);
 }
 
+// HOME PAGE
+body.index_true.home_true #nav {
+  margin-top: 20px; // because no nav content
+}
+
+// CONTENT PAGE, not an index or the home page
+// Skinnier, and max width (!), centered h's
+body.index_ .content-main {
+  .make-column(6);
+  .make-column-offset(3);
+  img.page_media, iframe {
+    width: 100%;
+  }
+  iframe {
+    height: 400px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+  }
+  h1 {
+    font-size: 3.5em;
+    margin-bottom: 0em;
+
+  }
+  h2 {
+    font-size: 1.3em;
+    margin-bottom: 2.5em;
+  }
+  article {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+
+
 #nav {
  border-bottom: 1px solid #D4D7DB;
  &.bottom {
@@ -57,12 +111,14 @@ body {
    margin-top: 200px;
  }
 	a {
+    // color: black;
+    color: @text-color;
 		display: inline-block;
 		font-family: @font-family-sans-serif;
 		letter-spacing: 1px;
 		padding: 20px;
 		text-transform: uppercase;
-		font-size: @font-size-large;
+		// font-size: @font-size-large;
     text-decoration: none;
 		// text-transform: capitalize;
 		&:first-child {
@@ -82,41 +138,32 @@ body {
 	}
 }
 
-// .big_image
-// {
-// 	width: 100%;
-// }
-
 a.thumb_image
 {
 	width: 24%;
   // height: 300px;
-
   height: 30vh;
 	min-height: 200px;
 	margin: 1% 0.5%;
 	background-size: cover;
 	float: left;
 	display: block;
-
   background-position: center;
-
-  // .cool-hover-border();
-	// background-size: contain;
-	// background-repeat: no-repeat;
+  box-shadow: 0px 0px 2px gray;
 }
 
 
 a.page_link_thumb_a
 {
+  // perspective: 800px;  // makes it look nicer, but can cause flashing on siblings?
   background-position: initial;
   width: 49%; // needed when not using the cool-hover shit
   // height: 400px;
   // background-size: contain;
   background-repeat: no-repeat;
-  // position: absolute;
-
   position: relative; // so we can pos abs in the span
+  overflow: hidden;
+
 
   span {
     position: absolute;
@@ -125,24 +172,47 @@ a.page_link_thumb_a
     background-color: rgba(0, 0, 0, .80);
     color: white;
     font-family: 'Open Sans', sans-serif;
-    padding: 3px 0;
-    bottom: 0px;
-    -webkit-transition: 0.5s ease;
-    -moz-transition: 0.5s ease;
-    transition: 0.5s ease;
+    padding: 10px 0;
+    -webkit-transition: 0.4s ease;
+    -moz-transition: 0.4s ease;
+    transition: 0.4s ease;
     color: white;
+    line-height: 1.3em;
+
+    &.title {
+    transform: translate3d(0, 0, 0) rotateX(-90deg) skewY(5deg);
+    transform-origin: 0% 0%;
+    visibility: hidden;
+    transform-style: preserve-3d;
+    // translate3d(-100%, 0, 0) rotateY(90deg)
+    }
+
+    &.sum {
+    bottom: 0;
+    transform: translate3d(0, 0, 0) rotateX(90deg) skewY(-5deg);
+    transform-origin: 0% 100%;
+    visibility: hidden;
+    transform-style: preserve-3d;
+    font-size: @font-size-mini;
+    text-align: justified;
+    // translate3d(-100%, 0, 0) rotateY(90deg)
+    }
+
+  }
+  &:nth-child(even) span {
+      // transform-origin: 100% 0%;
+      transform: translate3d(0, 0, 0) rotateX(-90deg) skewY(-5deg);
   }
 
   &:hover span {
-    color: black;
-    background-color: rgba(255, 255, 255, .80);
-
-
-
+    visibility: visible;
+    transform: translate3d(0, 0px, 0) rotateX(0deg) skewY(0deg);
   }
 
 
-}
+
+
+} // end page link thumb
 
 @media screen and (min-width: 820px) {
 	body {
@@ -151,5 +221,36 @@ a.page_link_thumb_a
 }
 
 
+// body.showing_image {
+//  background-size: cover;
+//  float: left;
+//  display: block;
+//  background-position: center;
+//  width: 100%;
+//  height: 100%;
+//  // background-size: contain;
+//  // background-repeat: no-repeat;
+// }
+
+
+.press {
+  margin-bottom: 40px;
+  text-align: center;
+
+  h3{
+    display: inline;
+  }
+  a {
+    // padding: 5px;
+  }
+  a:after {
+content: ", ";
+color: #aaa;
+}
+
+  a:last-child:after {
+  content: "";
+  }
+}
 
 

@@ -1,0 +1,162 @@
+<!-- This is blatantly stolen from Google's example. It's 2:11am and I'm tired. -->
+<html>
+<head>
+<title>YayTM</title>
+<link rel="stylesheet" href="charcoal/stylesheet.css" type="text/css" charset="utf-8" />
+<style>
+body
+{
+	margin: 0px;
+
+}
+
+#content
+{
+	margin-left: auto;
+	margin-right: auto;
+	width: 960px;
+	background-color: white;
+}
+
+h1, h2
+{
+	font-family: 'CharcoalCYRegular', Arial, sans-serif;
+	background-color: black;
+	color: white;
+	padding: 10px;
+/*	margin-top: 0px;*/
+	letter-spacing: 2px;
+	text-align: center;
+}
+
+h1
+{
+	font-size: 60px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+
+}
+
+#playerContainer
+{
+/*	float: left;*/
+/*	margin-right: 10px;*/
+	margin-bottom: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 480px;
+}
+
+#videos2
+{
+/*	width: 700px;*/
+	float:right;
+}
+
+.titlec {
+  font-size: small;
+  width: 130px;
+}
+ul.videos li {
+  float: left;
+float: left;
+cursor: pointer;
+margin: 8px;
+padding: 5px;
+background-color: #DFDFDF;	
+border:1px solid #CFCFCF;
+}
+
+ul.videos li:hover
+{
+	background-color:#D1EDEF;
+	border: 1px solid #839FAF;
+}
+
+ul.videos
+{
+  margin-bottom: 1em;
+  padding-left : 0em;
+  margin-left: 0em;
+  list-style: none;
+	
+}
+
+
+</style>
+<script type="text/javascript" src="http://swfobject.googlecode.com/svn/trunk/swfobject/swfobject.js"></script>
+<script type="text/javascript">
+function loadVideo(playerUrl, autoplay) {
+  swfobject.embedSWF(
+      playerUrl + '&rel=1&border=0&fs=1&autoplay=' + 
+      (autoplay?1:0), 'player', '480', '320', '9.0.0', false, 
+      false, {allowfullscreen: 'true'});
+}
+
+function showMyVideos2(data) {
+  var feed = data.feed;
+  var entries = feed.entry || [];
+  var html = ['<ul class="videos">'];
+  for (var i = 0; i < entries.length; i++) {
+    var entry = entries[i];
+    var title = entry.title.$t.substr(0, 40);
+    var thumbnailUrl = entries[i].media$group.media$thumbnail[0].url;
+    var playerUrl = entries[i].media$group.media$content[0].url;
+    html.push('<li onclick="loadVideo(\'', playerUrl, '\', true)">',
+              '<img src="', 
+              thumbnailUrl, '" width="130" height="97"/>', '<div class="titlec">', title, '...</div></li>');
+		    // html.push('<li onclick="loadVideo(\'', playerUrl, '\', true)">',
+		    //           '<span class="titlec">', title, '...</span><br /><img src="', 
+		    //           thumbnailUrl, '" width="130" height="97"/>', '</span></li>');  
+}
+  html.push('</ul><br style="clear: left;"/>');
+  document.getElementById('videos2').innerHTML = html.join('');
+  if (entries.length > 0) {
+    loadVideo(entries[0].media$group.media$content[0].url, false);
+  }
+}
+</script>
+</head>
+<body>
+	
+	<div id="content" class="home">
+	
+		<h1>YayTM</h1>
+		<h2>1. Dispense dollar bills for quality dancing 2. Upload videos to youtube 3. ??? 4. Profit!</h2>
+		<p> YayTM is a physical piece which calls attention to itself at predetermined times, and asks passersby to dance for it, in exchange for a dollar. Using face tracking to measure dancing prowess, the YayTM determines if the user is dancing to its standards and dispenses a dollar if it likes what it sees. Then, regardless of the success or failure of the dancer, and without their previous knowledge,  the YayTM uploads video of the dancer to YouTube and displays that video here, for you to make fun of. More info and terms<a href="#aPhoto"> here</a>. Song played for dancers <a href="http://youtu.be/okqEVeNqBhc">here</a>. Additional documentation of this project is <a href="http://zachschwartz.com/2011/01/yaytm-documented/">available here</a></p>
+		<p> <i>YayTM is a project by <a href="http://zachschwartz.com">Zach Schwartz</a> for the <a href="http://itp.nyu.edu">Interactive Telecommunications Program</a> at NYU and is being featured in the 2010 Winter Show</i>.</p>
+	<div id="playerContainer">
+	    <object id="player"></object>
+	</div>
+	
+	<div id="videos2"></div>
+	<script 
+	    type="text/javascript" 
+	    src="http://gdata.youtube.com/feeds/api/users/yaytm/uploads?alt=json-in-script&callback=showMyVideos2&max-results=50">
+	</script><br><br>
+	<center><img src="img.JPG" id="aPhoto"></center>
+	<center><p>A photograph of the YayTM set up, waiting for a user/rube.</p></center>
+	<p><b>The small print in the photo reads:</b></p>
+	<p>END-USER LICENSE AGREEMENT FOR YayTM IMPORTANT PLEASE READ THE TERMS AND CONDITIONS OF THIS LICENSE AGREEMENT CAREFULLY BEFORE CONTINUING WITH THIS PROGRAM : YayTM End-User License Agreement ('EULA') is a legal agreement between you (either an individual or a single entity) and YayTM.com. for the YayTM.com software product(s) identified above which may include associated software components, media, printed materials, and 'online' or electronic documentation ('SOFTWARE PRODUCT'). By installing, copying, or otherwise using the SOFTWARE PRODUCT, you agree to be bound by the terms of this EULA. This license agreement represents the entire agreement concerning the program between you and YayTM.com, (referred to as 'licenser'), and it supersedes any prior proposal, representation, or understanding between the parties. If you do not agree to the terms of this EULA, do not install or use the SOFTWARE PRODUCT. You hereby waive all rights to your dignity, image, likeness for use by YayTM.com however it shall choose</p>
+	
+	
+	<br><br>
+	</div> <!-- end .home #content -->
+	
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20311401-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+</body>
+</html>

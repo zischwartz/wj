@@ -5,9 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{{site.title}} - {{page.title}}</title>
     <link href='http://fonts.googleapis.com/css?family=Noto+Serif|Open+Sans:600' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato:400' rel='stylesheet' type='text/css'>
+    <!-- <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,900' rel='stylesheet' type='text/css'> -->
     <link rel="stylesheet" href="/style.css">
   </head>
-  <body>
+  <body class='index_{{page.isIndex}} home_{{page.isHome}}'>
     <div class='wrapper'>
       <div id='nav'>
         {{#unless page.suppress_section_index}}<a href="{{site.baseUrl}}">Home</a>
@@ -17,11 +19,22 @@
         {{/unless}}
       </div> {{!-- /#nav --}}
     </div> {{!-- /.wrapper --}}
+
     <div class='wrapper'>
       <div class='content-main'>
+      <article>
 
-      <h1>{{page.title}}</h1>
-      {{#if page.media}} <img src='../{{page.media}}'> {{/if}}
+      <h1>{{{page.title}}}</h1>
+      <h2>{{{default page.subtitle page.sum}}}</h2>
+
+      {{#if page.press }}
+      <div class='press'>
+        <h3>Press:</h3>
+        {{#each page.press}}<a href='{{this.link}}'>{{this.text}}</a>{{/each}}
+      </div>
+        {{/if}}
+
+      {{#if page.media}} <img src='../{{page.media}}' class='page_media' style='{{{page.media_style}}}'> {{/if}}
       {{{content}}}
 
 
@@ -36,7 +49,7 @@
 	        {{!-- {{> imageThumbI this}} --}}
 	      {{/imagesInSect}}
 	    {{/unless}} {{/if}}
-
+    </article>
     </div> {{!-- end content-main --}}
   </div> {{!-- end wrapper --}}
 
@@ -53,7 +66,8 @@
  {{/if}}
 
   {{!-- For Debuging --}}
-  {{json site.index.sections}}
+  {{!-- {{json page}} --}}
+  {{!-- {{json site.index.sections}} --}}
 
   <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
   <script src='/script.js'></script>
