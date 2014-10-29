@@ -6,7 +6,7 @@ sum: A brief postmortem of the time Diana and I <strike>had</strike> were a star
 media_style: 'display:none'
 ---
 
-Last summer (2011), [Diana Huang](http://twitter.com/frooblor) and I were accepted into a startup incubator called [Seed Start](http://www.nycseedstart.com/) with a product which was tentatively named Learny, and eventually was renamed Guidesly. Our pitch video is below.
+In the summer of 2011, between our two year at ITP, [Diana Huang](http://twitter.com/frooblor) and I were accepted into a startup incubator called [Seed Start](http://www.nycseedstart.com/) with a product which was tentatively named Learny, and eventually was renamed Guidesly. Our pitch video is below.
 
 The product itself was a platform to allow non technical people to create interactive, media rich content, mostly step by step guides. In truth, I wanted to recreate [Hypercard](http://en.wikipedia.org/wiki/HyperCard) for the web/mobile, and the how-to space seemed like a good place to start.
 

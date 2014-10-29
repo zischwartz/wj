@@ -10,7 +10,7 @@ section_index_footer: true
 <!-- show_image_index: true -->
 
 ## Work (Job)
-Software Engineer and UX for [O'Reilly Atlas](https://atlas.oreilly.com/).
+Software Engineer and UX for [O'Reilly Atlas](https://atlas.oreilly.com/)
 
 Our team mostly works out of [Brooklyn Research](http://brooklynresearch.org/), with the [nice people](http://brooklynresearch.org/members/) there.
 

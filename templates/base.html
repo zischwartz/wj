@@ -25,13 +25,13 @@
       <article>
 
       <h1>{{{page.title}}}</h1>
-      <h2>{{{default page.subtitle page.sum}}}</h2>
+      <h2 class='subtitle'>{{{default page.subtitle page.sum}}}</h2>
 
       {{#if page.media}} <img src='../{{page.media}}' class='page_media' style='{{{page.media_style}}}'> {{/if}}
 
       {{#if page.press }}
         <div class='press'>
-          <h3>Press</h3>
+          <h2>Press</h2>
           {{#each page.press}}<a href='{{this.link}}'>{{this.text}}</a>{{/each}}
         </div>
       {{/if}}
